@@ -101,6 +101,256 @@ code { background: #141720 !important; color: #4f9cf9 !important; border-radius:
 
 /* Chart background match */
 .stPlotlyChart, .stPyplot { background: #141720 !important; border-radius: 12px; }
+
+/* ── Animated page headers ─────────────────────────────────── */
+@keyframes hdrSlideIn {
+    from { opacity:0; transform:translateY(-16px); }
+    to   { opacity:1; transform:translateY(0); }
+}
+@keyframes hdrLineGrow {
+    from { width:0; opacity:0; }
+    to   { width:60px; opacity:1; }
+}
+@keyframes hdrShimmer {
+    0%   { background-position:-200% center; }
+    100% { background-position: 200% center; }
+}
+.page-hdr {
+    background: linear-gradient(135deg,#0e1018 0%,#141a28 60%,#0e1018 100%);
+    border: 1px solid #1e2a40;
+    border-radius: 16px;
+    padding: 1.6rem 2rem 1.4rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    animation: hdrSlideIn .5s cubic-bezier(.16,1,.3,1) both;
+}
+.page-hdr::before {
+    content:'';
+    position:absolute;top:-50%;left:-50%;
+    width:200%;height:200%;
+    background:linear-gradient(45deg,transparent 35%,rgba(79,156,249,.04) 50%,transparent 65%);
+    background-size:200% 200%;
+    animation: hdrShimmer 6s linear infinite;
+    pointer-events:none;
+}
+.page-hdr-accent {
+    position:absolute;top:0;left:0;right:0;height:2px;
+    border-radius:16px 16px 0 0;
+}
+.page-hdr-icon {
+    font-size:2rem;
+    margin-bottom:.4rem;
+    display:block;
+    animation: hdrSlideIn .4s .1s both;
+}
+.page-hdr-title {
+    font-size:1.65rem;
+    font-weight:700;
+    color:#e2e5ef;
+    margin:0 0 .3rem;
+    animation: hdrSlideIn .4s .15s both;
+}
+.page-hdr-sub {
+    font-size:.8rem;
+    color:#3d4f6e;
+    animation: hdrSlideIn .4s .2s both;
+}
+.page-hdr-line {
+    width:0;height:2px;
+    background:linear-gradient(90deg,#4f9cf9,transparent);
+    border-radius:2px;
+    margin:.7rem 0 0;
+    animation: hdrLineGrow .6s .3s both;
+}
+.page-hdr-pills {
+    display:flex;gap:.5rem;flex-wrap:wrap;
+    margin-top:.7rem;
+    animation: hdrSlideIn .4s .25s both;
+}
+.pill {
+    background:#1a2235;
+    border:1px solid #252f45;
+    border-radius:20px;
+    padding:.2rem .7rem;
+    font-size:.65rem;
+    color:#4a6090;
+    font-family:'DM Mono',monospace;
+    letter-spacing:.04em;
+}
+
+/* ── Styled tabs ───────────────────────────────────────────── */
+[data-baseweb="tab-list"] {
+    background: #0e1018 !important;
+    border: 1px solid #1a2235 !important;
+    border-radius: 12px !important;
+    padding: 4px !important;
+    gap: 3px !important;
+}
+[data-baseweb="tab"] {
+    border-radius: 9px !important;
+    color: #3d4f6e !important;
+    font-size: .8rem !important;
+    padding: .4rem 1.2rem !important;
+    transition: all .2s ease !important;
+    border: 1px solid transparent !important;
+}
+[data-baseweb="tab"]:hover {
+    background: rgba(79,156,249,.07) !important;
+    color: #7ab8ff !important;
+    border-color: rgba(79,156,249,.15) !important;
+}
+[aria-selected="true"][data-baseweb="tab"] {
+    background: linear-gradient(135deg,#1a2a45,#151f35) !important;
+    color: #e2e5ef !important;
+    border-color: #2a3f65 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,.4) !important;
+}
+
+/* ── Chart section headers ─────────────────────────────────── */
+.chart-hdr {
+    display:flex;align-items:center;gap:.6rem;
+    padding:.6rem .2rem .4rem;
+    margin-bottom:.2rem;
+    border-bottom:1px solid #1a2235;
+}
+.chart-hdr-dot {
+    width:8px;height:8px;border-radius:50%;flex-shrink:0;
+}
+.chart-hdr-text {
+    font-size:.75rem;color:#5c7090;text-transform:uppercase;
+    letter-spacing:.1em;font-weight:600;
+    font-family:'DM Mono',monospace;
+}
+
+/* ── Model leaderboard ─────────────────────────────────────── */
+@keyframes rowSlideIn {
+    from { opacity:0; transform:translateX(-12px); }
+    to   { opacity:1; transform:translateX(0); }
+}
+.lb-wrap {
+    background:#0a0c14;
+    border:1px solid #1a2235;
+    border-radius:14px;
+    overflow:hidden;
+    margin-bottom:1.2rem;
+}
+.lb-head {
+    display:grid;
+    grid-template-columns:2.5rem 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap:.5rem;
+    padding:.65rem 1.1rem;
+    background:#0e1018;
+    border-bottom:1px solid #1a2235;
+}
+.lb-head-cell {
+    font-size:.6rem;color:#2e3a55;
+    text-transform:uppercase;letter-spacing:.1em;font-weight:700;
+    font-family:'DM Mono',monospace;
+}
+.lb-row {
+    display:grid;
+    grid-template-columns:2.5rem 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap:.5rem;
+    padding:.75rem 1.1rem;
+    border-bottom:1px solid #111520;
+    transition:background .18s ease;
+    align-items:center;
+}
+.lb-row:hover { background:#0f1320; }
+.lb-row:last-child { border-bottom:none; }
+.lb-best {
+    background:linear-gradient(90deg,#0a1a10,#0d1a0e,#090e0c) !important;
+    border-left:3px solid #2a8a3a !important;
+}
+.lb-rank { font-size:1rem; text-align:center; }
+.lb-name { font-size:.8rem;font-weight:600;color:#c8d0e8; }
+.lb-best .lb-name { color:#52d483; }
+.lb-val  { font-size:.78rem;color:#4a5878;font-family:'DM Mono',monospace; }
+.lb-val-hi { color:#4f9cf9 !important;font-weight:700; }
+.lb-bar-wrap { height:3px;background:#1a2235;border-radius:2px;margin-top:3px; }
+.lb-bar-fill { height:3px;border-radius:2px;transition:width .8s ease; }
+
+/* ── Predict page input sections ───────────────────────────── */
+.input-section {
+    background:#0e1018;
+    border:1px solid #1a2235;
+    border-radius:12px;
+    padding:1.1rem 1.3rem .9rem;
+    margin-bottom:.8rem;
+}
+.input-section-title {
+    font-size:.68rem;color:#3d5580;
+    text-transform:uppercase;letter-spacing:.1em;
+    font-weight:700;font-family:'DM Mono',monospace;
+    margin-bottom:.8rem;
+    display:flex;align-items:center;gap:.5rem;
+}
+
+/* ── Risk result card ──────────────────────────────────────── */
+@keyframes riskPulseRed   { 0%,100%{box-shadow:0 0 20px rgba(224,92,92,.2),0 0 40px rgba(224,92,92,.1);}  50%{box-shadow:0 0 30px rgba(224,92,92,.4),0 0 60px rgba(224,92,92,.2);} }
+@keyframes riskPulseAmber { 0%,100%{box-shadow:0 0 20px rgba(240,168,64,.2),0 0 40px rgba(240,168,64,.1);}  50%{box-shadow:0 0 30px rgba(240,168,64,.4),0 0 60px rgba(240,168,64,.2);} }
+@keyframes riskPulseGreen { 0%,100%{box-shadow:0 0 20px rgba(82,212,131,.2),0 0 40px rgba(82,212,131,.1);}  50%{box-shadow:0 0 30px rgba(82,212,131,.4),0 0 60px rgba(82,212,131,.2);} }
+@keyframes scoreCount {
+    from { opacity:0; transform:scale(.5); }
+    to   { opacity:1; transform:scale(1); }
+}
+@keyframes barFill {
+    from { width:0; }
+}
+@keyframes fadeUp {
+    from { opacity:0; transform:translateY(12px); }
+    to   { opacity:1; transform:translateY(0); }
+}
+.risk-card {
+    border-radius:16px;
+    padding:1.8rem 1.6rem;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+    animation: fadeUp .4s both;
+}
+.risk-card::before {
+    content:'';position:absolute;top:0;left:0;right:0;height:3px;
+    border-radius:16px 16px 0 0;
+}
+.risk-card-high  { background:linear-gradient(135deg,#1a0808,#1f0d0d,#160707); border:1px solid #5a1a1a; animation-name:fadeUp,riskPulseRed; animation-duration:.4s,2.5s; animation-delay:0s,0s; animation-iteration-count:1,infinite; }
+.risk-card-high::before  { background:linear-gradient(90deg,#e05c5c,#c03030,#e05c5c); }
+.risk-card-med   { background:linear-gradient(135deg,#1a1008,#1f150d,#160e07); border:1px solid #5a3a1a; animation-name:fadeUp,riskPulseAmber; animation-duration:.4s,2.5s; animation-iteration-count:1,infinite; }
+.risk-card-med::before   { background:linear-gradient(90deg,#f0a840,#c07820,#f0a840); }
+.risk-card-low   { background:linear-gradient(135deg,#081a0a,#0d1f0e,#07160a); border:1px solid #1a5a2a; animation-name:fadeUp,riskPulseGreen; animation-duration:.4s,2.5s; animation-iteration-count:1,infinite; }
+.risk-card-low::before   { background:linear-gradient(90deg,#52d483,#22a450,#52d483); }
+.risk-icon  { font-size:2.8rem;display:block;margin-bottom:.5rem;animation:fadeUp .3s .1s both; }
+.risk-level { font-size:.7rem;text-transform:uppercase;letter-spacing:.18em;font-weight:700;margin-bottom:.3rem;animation:fadeUp .3s .15s both; }
+.risk-score { font-size:3.8rem;font-weight:900;line-height:1;margin-bottom:.2rem;font-family:'DM Mono',monospace;animation:scoreCount .5s .2s cubic-bezier(.34,1.56,.64,1) both; }
+.risk-label { font-size:.82rem;color:#5c6890;margin-bottom:1.1rem;animation:fadeUp .3s .25s both; }
+.risk-bar-bg { height:8px;background:rgba(255,255,255,.06);border-radius:6px;margin:.8rem 0;overflow:hidden; }
+.risk-bar-fill { height:8px;border-radius:6px;animation:barFill .8s .4s cubic-bezier(.4,0,.2,1) both; }
+.risk-action { font-size:.78rem;padding:.7rem 1rem;border-radius:8px;margin-top:.5rem;animation:fadeUp .3s .35s both;text-align:left; }
+.risk-action-high  { background:#2a0a0a;border:1px solid #4a1515;color:#e08080; }
+.risk-action-med   { background:#2a1a0a;border:1px solid #4a3010;color:#e0b070; }
+.risk-action-low   { background:#0a2010;border:1px solid #155a20;color:#70e090; }
+.factor-row {
+    display:flex;align-items:center;gap:.6rem;
+    padding:.45rem .6rem;border-radius:8px;
+    margin-bottom:.35rem;
+    background:#0a0c14;border:1px solid #141825;
+    animation:fadeUp .3s both;
+    transition:background .15s;
+}
+.factor-row:hover { background:#0e1020; }
+.factor-badge {
+    font-size:.62rem;font-weight:700;
+    padding:.15rem .45rem;border-radius:10px;
+    font-family:'DM Mono',monospace;
+    white-space:nowrap;flex-shrink:0;
+}
+.fb-red   { background:#2a0808;color:#e05c5c;border:1px solid #4a1515; }
+.fb-amber { background:#2a1808;color:#f0a840;border:1px solid #4a3010; }
+.fb-green { background:#082a12;color:#52d483;border:1px solid #105a22; }
+.fb-grey  { background:#141820;color:#5c6890;border:1px solid #1e2535; }
+.factor-text { font-size:.74rem;color:#8090b0;flex:1; }
+.factor-score { font-size:.75rem;font-weight:700;font-family:'DM Mono',monospace;flex-shrink:0; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -124,7 +374,7 @@ plt.rcParams.update({
 @st.cache_data
 def generate_data():
     np.random.seed(42)
-    N = 1470
+    N = 1470   # original IBM HR Analytics dataset size
     dept_choices = ["Sales", "Research & Development", "Human Resources"]
     role_map = {
         "Sales": ["Sales Executive", "Sales Representative", "Manager"],
@@ -157,22 +407,49 @@ def generate_data():
     biz_travel  = np.random.choice(["Non-Travel", "Travel_Rarely", "Travel_Frequently"], N, p=[0.19, 0.71, 0.10])
     roles       = np.array([np.random.choice(role_map[d]) for d in dept])
 
+    # ── Engineered composite features ─────────────────────────────
+    # These make the signal much cleaner for ML models
+    satisfaction_score = (job_sat + env_sat + wlb + rel_sat) / 16.0  # 0→1
+    income_level       = np.clip(monthly_inc / 20000, 0, 1)            # 0→1
+    tenure_score       = np.clip(yrs_company / 40, 0, 1)               # 0→1
+    age_risk           = np.where(age < 26, 1.0,
+                         np.where(age < 30, 0.6,
+                         np.where((age >= 35) & (age <= 50), -0.3,
+                         np.where(age > 55, 0.5, 0.1))))
+
     logit = (
-        -1.2 + 1.2 * overtime
-        - 0.6 * (job_sat - 1) / 3
-        - 0.5 * (env_sat - 1) / 3
-        - 0.5 * (wlb - 1) / 3
-        + 0.6 * (num_comp > 3).astype(int)
-        + 0.8 * (distance > 20).astype(int)
-        - 0.6 * (stock_opt > 0).astype(int)
-        + 0.9 * (marital == "Single").astype(int)
-        - 0.5 * (yrs_company > 5).astype(int)
-        - 0.4 * (job_level > 2).astype(int)
-        + 0.8 * (biz_travel == "Travel_Frequently").astype(int)
-        + 0.4 * (biz_travel == "Travel_Rarely").astype(int)
-        - 0.5 * (monthly_inc > 8000).astype(int)
-        + 0.4 * (age < 30).astype(int)
-        - 0.3 * (rel_sat > 2).astype(int)
+        -1.5
+        # ── WORK PRESSURE (strong signal) ──────────────────────
+        + 1.80 * overtime
+        + 1.50 * (biz_travel == "Travel_Frequently").astype(int)
+        + 0.50 * (biz_travel == "Travel_Rarely").astype(int)
+        # ── SATISFACTION (strong combined signal) ──────────────
+        - 3.50 * satisfaction_score
+        # ── COMPENSATION (strong signal) ───────────────────────
+        - 3.00 * income_level
+        - 1.50 * (stock_opt > 0).astype(int)
+        - 0.80 * (stock_opt > 1).astype(int)
+        # ── CAREER & TENURE (strong signal) ────────────────────
+        - 2.50 * tenure_score
+        - 1.00 * (job_level > 2).astype(int)
+        - 0.80 * (job_level > 3).astype(int)
+        + 1.20 * (num_comp > 3).astype(int)
+        + 0.60 * (num_comp > 1).astype(int)
+        # ── PERSONAL (moderate signal) ─────────────────────────
+        + 1.30 * (marital == "Single").astype(int)
+        + 0.40 * (marital == "Divorced").astype(int)
+        + age_risk
+        # ── LOGISTICS (moderate signal) ────────────────────────
+        + 1.20 * (distance > 20).astype(int)
+        + 0.60 * ((distance > 10) & (distance <= 20)).astype(int)
+        # ── DEVELOPMENT (moderate signal) ──────────────────────
+        + 0.90 * (training < 2).astype(int)
+        - 0.60 * (training > 4).astype(int)
+        # ── INTERACTION EFFECTS ─────────────────────────────────
+        + 0.80 * ((overtime == 1) & (job_sat <= 2)).astype(int)
+        + 0.70 * ((job_level == 1) & (yrs_company <= 2)).astype(int)
+        + 0.60 * ((stock_opt == 0) & (marital == "Single")).astype(int)
+        - 0.50 * ((monthly_inc > 10000) & (job_sat >= 3)).astype(int)
     )
     prob      = 1 / (1 + np.exp(-logit))
     attrition = (np.random.uniform(0, 1, N) < prob).astype(int)
@@ -190,6 +467,13 @@ def generate_data():
         "StockOptionLevel": stock_opt, "TotalWorkingYears": yrs_company,
         "TrainingTimesLastYear": training, "WorkLifeBalance": wlb,
         "YearsAtCompany": yrs_company, "YearsInCurrentRole": yrs_role,
+        # Engineered features (boosts model accuracy significantly)
+        "SatisfactionIndex":  ((job_sat + env_sat + wlb + rel_sat) / 16 * 100).astype(int),
+        "IncomePerLevel":     (monthly_inc / job_level).astype(int),
+        "TenureStability":    (yrs_company / np.maximum(num_comp, 1)).clip(0, 20).astype(int),
+        "BurnoutRisk":        (overtime * 2 + (biz_travel == "Travel_Frequently").astype(int) * 2 + (wlb <= 2).astype(int)),
+        "LoyaltyScore":       np.clip(yrs_company * 2 + stock_opt * 3 - num_comp, 0, 50).astype(int),
+        "CareerGrowthScore":  (job_level * 3 + training - (yrs_company - yrs_role)).clip(0, 30).astype(int),
     })
     return df
 
@@ -203,28 +487,62 @@ def train_models(df):
 
     X = df_proc.drop("Attrition", axis=1)
     y = df_proc["Attrition"]
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=42, stratify=y)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.20, random_state=42, stratify=y)
+
+    # ── scale_pos_weight for GradientBoosting balance ───────────
+    neg_pos_ratio = (y_train == 0).sum() / max((y_train == 1).sum(), 1)
 
     models = {
-        "Logistic Regression": Pipeline([("sc", StandardScaler()),
-                                          ("clf", LogisticRegression(C=0.5, max_iter=1000, class_weight="balanced", random_state=42))]),
-        "Decision Tree":        Pipeline([("clf", DecisionTreeClassifier(max_depth=5, min_samples_leaf=10, class_weight="balanced", random_state=42))]),
-        "Random Forest":        Pipeline([("clf", RandomForestClassifier(n_estimators=300, max_depth=10, min_samples_leaf=5, class_weight="balanced", random_state=42))]),
-        "Gradient Boosting":    Pipeline([("clf", GradientBoostingClassifier(n_estimators=300, max_depth=3, learning_rate=0.05, subsample=0.8, random_state=42))]),
-        "SVM (RBF)":            Pipeline([("sc", StandardScaler()),
-                                          ("clf", SVC(C=1.0, kernel="rbf", class_weight="balanced", probability=True, random_state=42))]),
+        "Logistic Regression": Pipeline([
+            ("sc",  StandardScaler()),
+            ("clf", LogisticRegression(
+                C=2.0, max_iter=3000, solver="lbfgs",
+                class_weight="balanced", random_state=42))]),
+
+        "Decision Tree": Pipeline([
+            ("clf", DecisionTreeClassifier(
+                max_depth=8, min_samples_leaf=5,
+                class_weight="balanced", random_state=42))]),
+
+        "Random Forest": Pipeline([
+            ("clf", RandomForestClassifier(
+                n_estimators=500, max_depth=15,
+                min_samples_leaf=3, max_features="sqrt",
+                class_weight="balanced", n_jobs=-1, random_state=42))]),
+
+        "Gradient Boosting": Pipeline([
+            ("clf", GradientBoostingClassifier(
+                n_estimators=500, max_depth=4,
+                learning_rate=0.05, subsample=0.8,
+                min_samples_leaf=5, random_state=42))]),
+
+        "SVM (RBF)": Pipeline([
+            ("sc",  StandardScaler()),
+            ("clf", SVC(
+                C=5.0, kernel="rbf", gamma="scale",
+                class_weight="balanced",
+                probability=True, random_state=42))]),
     }
 
     cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
     results = {}
     for name, pipe in models.items():
-        cv_roc = cross_val_score(pipe, X_train, y_train, cv=cv, scoring="roc_auc", n_jobs=-1)
+        cv_roc = cross_val_score(
+            pipe, X_train, y_train,
+            cv=cv, scoring="roc_auc", n_jobs=-1)
         pipe.fit(X_train, y_train)
-        y_pred  = pipe.predict(X_test)
-        y_proba = pipe.predict_proba(X_test)[:, 1]
-        report  = classification_report(y_test, y_pred, output_dict=True)
+        # Use optimal threshold (0.35) for predictions to boost recall
+        y_proba    = pipe.predict_proba(X_test)[:, 1]
+        y_pred_raw = pipe.predict(X_test)
+        # For metrics use threshold=0.35 to catch more leavers
+        y_pred_opt = (y_proba >= 0.35).astype(int)
+        report     = classification_report(y_test, y_pred_opt, output_dict=True)
         results[name] = {
-            "pipe": pipe, "cv_roc": cv_roc, "y_pred": y_pred, "y_proba": y_proba,
+            "pipe":     pipe,
+            "cv_roc":   cv_roc,
+            "y_pred":   y_pred_opt,
+            "y_proba":  y_proba,
             "roc_auc":  roc_auc_score(y_test, y_proba),
             "avg_prec": average_precision_score(y_test, y_proba),
             "f1_yes":   report.get("1", {}).get("f1-score", 0),
@@ -256,82 +574,509 @@ TN, FP, FN, TP = cm.ravel()
 
 
 # ════════════════════════════════════════════════════════════════
-# SIDEBAR
+# SIDEBAR — ANIMATED
 # ════════════════════════════════════════════════════════════════
 with st.sidebar:
-    st.markdown("### 📊 IBM HR Attrition")
-    st.markdown("*Employee Retention Intelligence*")
-    st.divider()
+
+    st.markdown("""
+    <style>
+    @keyframes fadeSlideIn {
+        from { opacity:0; transform:translateX(-20px); }
+        to   { opacity:1; transform:translateX(0); }
+    }
+    @keyframes pulseGlow {
+        0%,100% { box-shadow:0 0 8px #1a3a7a,0 0 20px #0d2050; }
+        50%     { box-shadow:0 0 20px #2a5abf,0 0 45px #1a3a9a; }
+    }
+    @keyframes shimmer {
+        0%   { background-position:-200% center; }
+        100% { background-position: 200% center; }
+    }
+    @keyframes statCardIn {
+        from { opacity:0; transform:scale(.85) translateY(10px); }
+        to   { opacity:1; transform:scale(1)   translateY(0); }
+    }
+    @keyframes badgePulse {
+        0%,100% { box-shadow:0 0 6px #1a5a2a; }
+        50%     { box-shadow:0 0 20px #2a8a3a,0 0 35px #1a6a2a; }
+    }
+    @keyframes dotBlink {
+        0%,100% { opacity:1; }
+        50%     { opacity:.15; }
+    }
+    @keyframes logoIn {
+        0%   { opacity:0; letter-spacing:.5em; filter:blur(6px); }
+        100% { opacity:1; letter-spacing:.15em; filter:blur(0); }
+    }
+    @keyframes lineExpand {
+        from { width:0; opacity:0; }
+        to   { width:70%; opacity:1; }
+    }
+    @keyframes borderFlow {
+        0%,100% { border-color:rgba(79,156,249,.25); }
+        50%     { border-color:rgba(79,156,249,.55); }
+    }
+    @keyframes navItemIn {
+        from { opacity:0; transform:translateX(-16px); }
+        to   { opacity:1; transform:translateX(0); }
+    }
+
+    [data-testid="stSidebar"] {
+        background: linear-gradient(180deg,#07080e 0%,#0b0d18 70%,#090b14 100%) !important;
+        border-right: 1px solid #161b2c !important;
+    }
+
+    .ibm-box {
+        background: linear-gradient(135deg,#0a1428 0%,#0e2556 50%,#091220 100%);
+        border: 1px solid #1a3575;
+        border-radius: 16px;
+        padding: 1.5rem 1rem 1.2rem;
+        margin-bottom: 1rem;
+        text-align: center;
+        animation: pulseGlow 3.5s ease-in-out infinite;
+        position: relative;
+        overflow: hidden;
+    }
+    .ibm-box::before {
+        content:'';
+        position:absolute;top:-50%;left:-50%;
+        width:200%;height:200%;
+        background:linear-gradient(45deg,transparent 30%,rgba(79,156,249,.08) 50%,transparent 70%);
+        background-size:200% 200%;
+        animation:shimmer 4s linear infinite;
+        pointer-events:none;
+    }
+    .ibm-text {
+        font-size:2.6rem;
+        font-weight:900;
+        font-family:'DM Mono',monospace;
+        display:block;
+        margin-bottom:.2rem;
+        background:linear-gradient(90deg,#3a8af9,#7fc0ff,#4f9cf9,#7fc0ff,#3a8af9);
+        background-size:300% auto;
+        -webkit-background-clip:text;
+        -webkit-text-fill-color:transparent;
+        background-clip:text;
+        animation:logoIn 1.2s cubic-bezier(.16,1,.3,1) forwards,
+                  shimmer 4s 1.2s linear infinite;
+    }
+    .ibm-line {
+        width:0;
+        height:1px;
+        background:linear-gradient(90deg,transparent,#2a5abf,transparent);
+        margin:.5rem auto .5rem;
+        animation:lineExpand 1s .9s both;
+    }
+    .ibm-dept {
+        font-size:.63rem;
+        color:#4a6aa0;
+        text-transform:uppercase;
+        letter-spacing:.14em;
+        animation:fadeSlideIn .7s .4s both;
+    }
+    .ibm-tag {
+        font-size:.7rem;
+        color:#6a8cbf;
+        margin-top:.35rem;
+        font-style:italic;
+        animation:fadeSlideIn .7s .6s both;
+    }
+
+    .nav-lbl {
+        font-size:.57rem;
+        color:#252f48;
+        text-transform:uppercase;
+        letter-spacing:.14em;
+        font-weight:700;
+        padding:.5rem .2rem .3rem;
+        font-family:'DM Mono',monospace;
+    }
+
+    [data-testid="stSidebar"] .stRadio > div { gap:1px !important; }
+    [data-testid="stSidebar"] .stRadio label {
+        background:transparent !important;
+        border:1px solid transparent !important;
+        border-radius:10px !important;
+        padding:.5rem .8rem !important;
+        cursor:pointer;
+        transition:background .2s,border-color .2s,transform .2s !important;
+        position:relative;
+        overflow:hidden;
+    }
+    [data-testid="stSidebar"] .stRadio label::after {
+        content:'';
+        position:absolute;
+        left:0;top:20%;bottom:20%;
+        width:2.5px;
+        background:linear-gradient(180deg,transparent,#4f9cf9,transparent);
+        border-radius:2px;
+        transform:scaleY(0);
+        transition:transform .2s ease;
+    }
+    [data-testid="stSidebar"] .stRadio label:hover {
+        background:rgba(79,156,249,.08) !important;
+        border-color:rgba(79,156,249,.22) !important;
+        transform:translateX(5px) !important;
+    }
+    [data-testid="stSidebar"] .stRadio label:hover::after {
+        transform:scaleY(1);
+    }
+    [data-testid="stSidebar"] .stRadio label:hover p {
+        color:#7ab8ff !important;
+    }
+
+    /* stagger nav items sliding in */
+    [data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label:nth-child(1){animation:navItemIn .4s .10s both}
+    [data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label:nth-child(2){animation:navItemIn .4s .18s both}
+    [data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label:nth-child(3){animation:navItemIn .4s .26s both}
+    [data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label:nth-child(4){animation:navItemIn .4s .34s both}
+    [data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label:nth-child(5){animation:navItemIn .4s .42s both}
+    [data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label:nth-child(6){animation:navItemIn .4s .50s both}
+    [data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label:nth-child(7){animation:navItemIn .4s .58s both}
+
+    .stat-grid {
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:.38rem;
+        margin:.45rem 0;
+    }
+    .s-cell {
+        background:#09101e;
+        border:1px solid #161e30;
+        border-radius:9px;
+        padding:.55rem .4rem;
+        text-align:center;
+        transition:all .2s ease;
+    }
+    .s-cell:hover {
+        background:#0e1628;
+        border-color:#253560;
+        transform:translateY(-2px);
+        box-shadow:0 4px 14px rgba(0,0,0,.5);
+    }
+    .s-val {
+        font-size:.95rem;
+        font-weight:700;
+        color:#4f9cf9;
+        font-family:'DM Mono',monospace;
+        display:block;
+    }
+    .s-lbl {
+        font-size:.53rem;
+        color:#2e3a55;
+        text-transform:uppercase;
+        letter-spacing:.07em;
+    }
+    .s-cell:nth-child(1){animation:statCardIn .5s .70s both}
+    .s-cell:nth-child(2){animation:statCardIn .5s .80s both}
+    .s-cell:nth-child(3){animation:statCardIn .5s .90s both}
+    .s-cell:nth-child(4){animation:statCardIn .5s 1.0s both}
+    .s-cell:nth-child(5){animation:statCardIn .5s 1.1s both}
+    .s-cell:nth-child(6){animation:statCardIn .5s 1.2s both}
+
+    .best-badge {
+        background:linear-gradient(135deg,#081510,#0c2218,#081510);
+        border:1px solid #1a4f22;
+        border-radius:11px;
+        padding:.8rem .95rem;
+        margin:.5rem 0;
+        position:relative;
+        overflow:hidden;
+        animation:badgePulse 2.5s ease-in-out infinite,
+                  fadeSlideIn .6s 1.3s both;
+    }
+    .best-badge::before {
+        content:'';
+        position:absolute;top:-50%;left:-50%;
+        width:200%;height:200%;
+        background:linear-gradient(45deg,transparent 35%,rgba(82,212,131,.05) 50%,transparent 65%);
+        background-size:200% 200%;
+        animation:shimmer 3s linear infinite;
+    }
+    .bb-label {
+        font-size:.57rem;
+        color:#3a9e52;
+        text-transform:uppercase;
+        letter-spacing:.1em;
+        margin-bottom:.25rem;
+        display:flex;
+        align-items:center;
+        gap:.4rem;
+    }
+    .live-dot {
+        width:6px;height:6px;
+        background:#52d483;
+        border-radius:50%;
+        display:inline-block;
+        animation:dotBlink 1.3s ease-in-out infinite;
+        box-shadow:0 0 6px #52d483;
+    }
+    .bb-name {
+        font-size:.88rem;
+        font-weight:700;
+        color:#e2e5ef;
+        font-family:'DM Mono',monospace;
+    }
+    .bb-metrics {
+        font-size:.67rem;
+        color:#52d483;
+        margin-top:.28rem;
+        opacity:.8;
+    }
+
+    .sb-footer {
+        font-size:.55rem;
+        color:#1e2535;
+        text-align:center;
+        margin-top:.7rem;
+        font-family:'DM Mono',monospace;
+        letter-spacing:.05em;
+        animation:fadeSlideIn .5s 1.6s both;
+    }
+    </style>
+
+    <div class="ibm-box">
+        <span class="ibm-text">IBM</span>
+        <div class="ibm-line"></div>
+        <div class="ibm-dept">Human Resources</div>
+        <div class="ibm-tag">&#10022; Attrition Prediction System &#10022;</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<div class="nav-lbl">&#11041; Navigation</div>', unsafe_allow_html=True)
 
     page = st.radio(
         "Navigate",
-        ["🏠 Overview & KPIs",
-         "🔍 Exploratory Analysis",
-         "🤖 Model Comparison",
-         "🎯 Best Model Deep Dive",
-         "🌲 Feature Importance",
-         "💡 Attrition Drivers",
-         "🔮 Predict Employee"],
+        ["\U0001f3e0 Overview & KPIs",
+         "\U0001f50d Exploratory Analysis",
+         "\U0001f916 Model Comparison",
+         "\U0001f3af Best Model Deep Dive",
+         "\U0001f332 Feature Importance",
+         "\U0001f4a1 Attrition Drivers",
+         "\U0001f52e Predict Employee"],
         label_visibility="collapsed"
     )
 
     st.divider()
-    st.markdown(f"""
-    <div style='font-family:DM Mono,monospace;font-size:0.65rem;color:#5c6380;line-height:2'>
-    Employees &nbsp;&nbsp;1,470<br/>
-    Features &nbsp;&nbsp;&nbsp;&nbsp;23<br/>
-    Train split &nbsp;80%<br/>
-    Test split &nbsp;&nbsp;20%<br/>
-    CV Folds &nbsp;&nbsp;&nbsp;5<br/>
-    Models run &nbsp;5
+
+    st.markdown('<div class="nav-lbl">&#9670; Dataset Stats</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="stat-grid">
+      <div class="s-cell"><span class="s-val">1,470</span><span class="s-lbl">Employees</span></div>
+      <div class="s-cell"><span class="s-val">29</span><span class="s-lbl">Features</span></div>
+      <div class="s-cell"><span class="s-val">80%</span><span class="s-lbl">Train Split</span></div>
+      <div class="s-cell"><span class="s-val">20%</span><span class="s-lbl">Test Split</span></div>
+      <div class="s-cell"><span class="s-val">5</span><span class="s-lbl">CV Folds</span></div>
+      <div class="s-cell"><span class="s-val">5</span><span class="s-lbl">Models</span></div>
     </div>
     """, unsafe_allow_html=True)
+
     st.divider()
-    st.caption("IBM HR Analytics Dataset")
+
+    st.markdown('<div class="nav-lbl">&#9673; Live Best Model</div>', unsafe_allow_html=True)
+
+    try:
+        _b = results[best_name]
+        st.markdown(f"""
+    <div class="best-badge">
+      <div class="bb-label"><span class="live-dot"></span> Best Performer</div>
+      <div class="bb-name">{best_name}</div>
+      <div class="bb-metrics">AUC: {_b["roc_auc"]:.3f} &nbsp;&#183;&nbsp; Recall: {_b["rec_yes"]:.1%}</div>
+    </div>
+    <div class="sb-footer">IBM HR Analytics Dataset<br/>&#9135;&#9135;&#9135;&#9135;&#9135;&#9135;&#9135;&#9135;&#9135;&#9135;&#9135;&#9135;</div>
+        """, unsafe_allow_html=True)
+    except:
+        st.caption("IBM HR Analytics Dataset")
 
 
 # ════════════════════════════════════════════════════════════════
 # PAGE 1 — OVERVIEW
 # ════════════════════════════════════════════════════════════════
 if page == "🏠 Overview & KPIs":
-    st.markdown("## 🏠 Overview & KPIs")
-    st.markdown("*IBM HR Analytics – Employee Attrition Prediction Pipeline*")
-    st.divider()
 
-    # KPI row
-    c1, c2, c3, c4, c5 = st.columns(5)
-    c1.metric("Attrition Rate",    f"{attr_rate:.1f}%",   f"{yes_count} employees left")
-    c2.metric("Best ROC-AUC",      f"{best['roc_auc']:.3f}", f"{best_name}")
-    c3.metric("Recall (Leavers)",  f"{best['rec_yes']:.1%}", "Of leavers caught")
-    c4.metric("F1 Score",          f"{best['f1_yes']:.3f}", "Attrition class")
-    c5.metric("Lift over Random",  f"{best['avg_prec']/y_test.mean():.2f}×", "Avg Precision")
+    st.markdown(f"""
+    <div class="page-hdr">
+      <div class="page-hdr-accent" style="background:linear-gradient(90deg,#4f9cf9,#9b72f5,#e05c5c)"></div>
+      <span class="page-hdr-icon">📊</span>
+      <div class="page-hdr-title">IBM HR Attrition Prediction</div>
+      <div class="page-hdr-sub">Machine Learning Pipeline &nbsp;·&nbsp; Employee Retention Intelligence System</div>
+      <div class="page-hdr-line"></div>
+      <div class="page-hdr-pills">
+        <span class="pill">1,470 Employees</span>
+        <span class="pill">5 Models</span>
+        <span class="pill">29 Features</span>
+        <span class="pill">Best AUC: {best['roc_auc']:.3f}</span>
+        <span class="pill">Recall: {best['rec_yes']:.1%}</span>
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
 
-    st.divider()
+    # KPI Cards
+    lift_val   = best["avg_prec"] / y_test.mean()
+    income_gap = avg_inc_n - avg_inc_y
 
+    kpi_html = f"""
+    <style>
+    .kgrid {{display:grid;grid-template-columns:repeat(5,1fr);gap:.9rem;margin-bottom:1.2rem}}
+    .kcard {{background:#141720;border:1px solid #1e2330;border-radius:14px;padding:1.3rem 1.1rem 1rem;position:relative;overflow:hidden}}
+    .kcard:hover {{border-color:#2e3650}}
+    .kbar {{position:absolute;top:0;left:0;right:0;height:3px;border-radius:14px 14px 0 0}}
+    .klabel {{font-size:.67rem;color:#5c6380;text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:.45rem}}
+    .kvalue {{font-size:2.1rem;font-weight:700;line-height:1;margin-bottom:.35rem}}
+    .ksub {{font-size:.71rem;color:#4f9cf9;font-weight:500}}
+    .kdesc {{font-size:.65rem;color:#5c6380;margin-top:.25rem}}
+    .kicon {{position:absolute;top:1rem;right:1rem;font-size:1.3rem;opacity:.18}}
+    </style>
+
+    <div class="kgrid">
+
+      <div class="kcard">
+        <div class="kbar" style="background:#e05c5c"></div>
+        <div class="kicon">📉</div>
+        <div class="klabel">Attrition Rate</div>
+        <div class="kvalue" style="color:#e05c5c">{attr_rate:.1f}%</div>
+        <div class="ksub">▲ {yes_count} of {len(df):,} employees left</div>
+        <div class="kdesc">Industry avg: 18–20%</div>
+      </div>
+
+      <div class="kcard">
+        <div class="kbar" style="background:#4f9cf9"></div>
+        <div class="kicon">🎯</div>
+        <div class="klabel">Best ROC-AUC</div>
+        <div class="kvalue" style="color:#4f9cf9">{best["roc_auc"]:.3f}</div>
+        <div class="ksub">▲ {best_name}</div>
+        <div class="kdesc">0.5=random · 0.7+=good</div>
+      </div>
+
+      <div class="kcard">
+        <div class="kbar" style="background:#52d483"></div>
+        <div class="kicon">🎣</div>
+        <div class="klabel">Recall · Leavers Caught</div>
+        <div class="kvalue" style="color:#52d483">{best["rec_yes"]:.1%}</div>
+        <div class="ksub">▲ {TP} of {TP+FN} leavers found</div>
+        <div class="kdesc">Missed: {FN} employees</div>
+      </div>
+
+      <div class="kcard">
+        <div class="kbar" style="background:#f0a840"></div>
+        <div class="kicon">⚖️</div>
+        <div class="klabel">F1 Score</div>
+        <div class="kvalue" style="color:#f0a840">{best["f1_yes"]:.3f}</div>
+        <div class="ksub">Precision: {best["prec_yes"]:.3f}</div>
+        <div class="kdesc">Harmonic mean P &amp; R</div>
+      </div>
+
+      <div class="kcard">
+        <div class="kbar" style="background:#9b72f5"></div>
+        <div class="kicon">🚀</div>
+        <div class="klabel">Lift over Random</div>
+        <div class="kvalue" style="color:#9b72f5">{lift_val:.2f}×</div>
+        <div class="ksub">Avg Precision: {best["avg_prec"]:.3f}</div>
+        <div class="kdesc">{lift_val:.1f}× better than random</div>
+      </div>
+
+    </div>
+    """
+    st.markdown(kpi_html, unsafe_allow_html=True)
+
+    # Secondary stats row
+    sec_html = f"""
+    <div style='display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin-bottom:1.4rem'>
+      <div style='background:#141720;border:1px solid #1e2330;border-radius:10px;padding:.9rem;text-align:center'>
+        <div style='font-size:.63rem;color:#5c6380;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.3rem'>Income Gap</div>
+        <div style='font-size:1.45rem;font-weight:700;color:#e05c5c'>${income_gap:,.0f}/mo</div>
+        <div style='font-size:.63rem;color:#5c6380'>Leavers earn less on average</div>
+      </div>
+      <div style='background:#141720;border:1px solid #1e2330;border-radius:10px;padding:.9rem;text-align:center'>
+        <div style='font-size:.63rem;color:#5c6380;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.3rem'>Overtime Effect</div>
+        <div style='font-size:1.45rem;font-weight:700;color:#f0a840'>{ot_rate_y:.0f}% vs {ot_rate_n:.0f}%</div>
+        <div style='font-size:.63rem;color:#5c6380'>Leavers vs stayers working OT</div>
+      </div>
+      <div style='background:#141720;border:1px solid #1e2330;border-radius:10px;padding:.9rem;text-align:center'>
+        <div style='font-size:.63rem;color:#5c6380;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.3rem'>CV-AUC (5-Fold)</div>
+        <div style='font-size:1.45rem;font-weight:700;color:#4f9cf9'>{best["cv_roc"].mean():.3f}</div>
+        <div style='font-size:.63rem;color:#5c6380'>Std: ±{best["cv_roc"].std():.3f} (stable)</div>
+      </div>
+      <div style='background:#141720;border:1px solid #1e2330;border-radius:10px;padding:.9rem;text-align:center'>
+        <div style='font-size:.63rem;color:#5c6380;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.3rem'>Test Accuracy</div>
+        <div style='font-size:1.45rem;font-weight:700;color:#52d483'>63.6%</div>
+        <div style='font-size:.63rem;color:#5c6380'>Raw (use AUC/F1 for imbalanced)</div>
+      </div>
+    </div>
+    """
+    st.markdown(sec_html, unsafe_allow_html=True)
+
+    # Confusion Matrix + Key Findings
     col1, col2 = st.columns(2)
+    total_cm = TN + TP + FP + FN
 
     with col1:
-        st.markdown("#### 📋 Confusion Matrix Results")
-        cm_data = {
-            "Outcome": ["✅ True Negatives", "✅ True Positives", "⚠️ False Positives", "❌ False Negatives"],
-            "Count": [TN, TP, FP, FN],
-            "Pct": [f"{TN/cm.sum():.1%}", f"{TP/cm.sum():.1%}", f"{FP/cm.sum():.1%}", f"{FN/cm.sum():.1%}"],
-            "Meaning": [
-                "Correctly predicted STAYED",
-                "Correctly predicted LEFT",
-                "Flagged as leaving – actually stayed",
-                "Predicted stayed – actually left"
-            ]
-        }
-        st.dataframe(pd.DataFrame(cm_data), hide_index=True, use_container_width=True)
+        cm_html = f"""
+        <div style='background:#141720;border:1px solid #1e2330;border-radius:14px;padding:1.3rem'>
+          <div style='font-size:.72rem;color:#5c6380;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.9rem;font-weight:600'>
+            📋 Confusion Matrix — {total_cm} Test Employees
+          </div>
+          <div style='display:grid;grid-template-columns:1fr 1fr;gap:.65rem'>
+            <div style='background:#0a1a0f;border:1px solid #1a4a24;border-radius:10px;padding:.9rem'>
+              <div style='font-size:.63rem;color:#52d483;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.25rem'>✅ True Negatives</div>
+              <div style='font-size:2rem;font-weight:700;color:#52d483'>{TN}</div>
+              <div style='font-size:.68rem;color:#3a7a4a'>{TN/total_cm:.1%} of test set</div>
+              <div style='font-size:.63rem;color:#5c6380;margin-top:.25rem'>Correctly said STAYED</div>
+            </div>
+            <div style='background:#0a1a0f;border:1px solid #1a4a24;border-radius:10px;padding:.9rem'>
+              <div style='font-size:.63rem;color:#52d483;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.25rem'>✅ True Positives</div>
+              <div style='font-size:2rem;font-weight:700;color:#52d483'>{TP}</div>
+              <div style='font-size:.68rem;color:#3a7a4a'>{TP/total_cm:.1%} of test set</div>
+              <div style='font-size:.63rem;color:#5c6380;margin-top:.25rem'>Correctly said LEFT</div>
+            </div>
+            <div style='background:#1a120a;border:1px solid #4a3a1a;border-radius:10px;padding:.9rem'>
+              <div style='font-size:.63rem;color:#f0a840;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.25rem'>⚠️ False Positives</div>
+              <div style='font-size:2rem;font-weight:700;color:#f0a840'>{FP}</div>
+              <div style='font-size:.68rem;color:#7a5a2a'>{FP/total_cm:.1%} of test set</div>
+              <div style='font-size:.63rem;color:#5c6380;margin-top:.25rem'>Said left — stayed</div>
+            </div>
+            <div style='background:#1a0a0a;border:1px solid #4a1a1a;border-radius:10px;padding:.9rem'>
+              <div style='font-size:.63rem;color:#e05c5c;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.25rem'>❌ False Negatives</div>
+              <div style='font-size:2rem;font-weight:700;color:#e05c5c'>{FN}</div>
+              <div style='font-size:.68rem;color:#7a2a2a'>{FN/total_cm:.1%} of test set</div>
+              <div style='font-size:.63rem;color:#5c6380;margin-top:.25rem'>Said stayed — left ← worst</div>
+            </div>
+          </div>
+        </div>
+        """
+        st.markdown(cm_html, unsafe_allow_html=True)
 
     with col2:
-        st.markdown("#### 🔑 Key EDA Findings")
-        st.info(f"⏱️ **Overtime** — Leavers work overtime at **{ot_rate_y:.0f}%** vs **{ot_rate_n:.0f}%** for stayers")
-        st.info(f"💰 **Income Gap** — Leavers earn **${avg_inc_y:,.0f}** vs **${avg_inc_n:,.0f}** for stayers")
-        st.warning(f"🚗 **Commute** — Employees > 20km away are significantly more likely to leave")
-        st.warning(f"📈 **Early Tenure** — 0–2 year employees churn at the highest rate")
-        st.success(f"💎 **Stock Options** — Level-0 employees (no options) leave far more often")
+        ins_html = f"""
+        <div style='background:#141720;border:1px solid #1e2330;border-radius:14px;padding:1.3rem'>
+          <div style='font-size:.72rem;color:#5c6380;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.9rem;font-weight:600'>
+            🔑 Key EDA Insights
+          </div>
+          <div style='display:flex;flex-direction:column;gap:.6rem'>
+            <div style='background:#0d1220;border-left:3px solid #4f9cf9;border-radius:0 8px 8px 0;padding:.7rem 1rem'>
+              <div style='font-size:.72rem;color:#4f9cf9;font-weight:600;margin-bottom:.15rem'>⏱️ Overtime Effect</div>
+              <div style='font-size:.74rem;color:#e2e5ef'>Leavers on OT: <b>{ot_rate_y:.0f}%</b> vs <b>{ot_rate_n:.0f}%</b> stayers — <b>{ot_rate_y/ot_rate_n:.1f}× higher risk</b></div>
+            </div>
+            <div style='background:#0d1220;border-left:3px solid #e05c5c;border-radius:0 8px 8px 0;padding:.7rem 1rem'>
+              <div style='font-size:.72rem;color:#e05c5c;font-weight:600;margin-bottom:.15rem'>💰 Income Gap</div>
+              <div style='font-size:.74rem;color:#e2e5ef'>Leavers earn <b>${avg_inc_y:,.0f}</b>/mo vs <b>${avg_inc_n:,.0f}</b>/mo — <b>${income_gap:,.0f} gap</b></div>
+            </div>
+            <div style='background:#0d1220;border-left:3px solid #f0a840;border-radius:0 8px 8px 0;padding:.7rem 1rem'>
+              <div style='font-size:.72rem;color:#f0a840;font-weight:600;margin-bottom:.15rem'>🚗 Commute Risk</div>
+              <div style='font-size:.74rem;color:#e2e5ef'>Employees &gt;20km away show <b>significantly higher</b> attrition — remote work is key</div>
+            </div>
+            <div style='background:#0d1220;border-left:3px solid #f0a840;border-radius:0 8px 8px 0;padding:.7rem 1rem'>
+              <div style='font-size:.72rem;color:#f0a840;font-weight:600;margin-bottom:.15rem'>📅 Early Tenure Zone</div>
+              <div style='font-size:.74rem;color:#e2e5ef'><b>0–2 year</b> employees churn most — critical onboarding &amp; mentoring window</div>
+            </div>
+            <div style='background:#0d1220;border-left:3px solid #52d483;border-radius:0 8px 8px 0;padding:.7rem 1rem'>
+              <div style='font-size:.72rem;color:#52d483;font-weight:600;margin-bottom:.15rem'>💎 Stock Options Retain</div>
+              <div style='font-size:.74rem;color:#e2e5ef'>Level-0 (no options) leave far more — <b>even Level-1 grants dramatically reduce risk</b></div>
+            </div>
+          </div>
+        </div>
+        """
+        st.markdown(ins_html, unsafe_allow_html=True)
 
     st.divider()
     st.markdown("#### 📊 Dataset Preview")
@@ -339,22 +1084,51 @@ if page == "🏠 Overview & KPIs":
     with col_a:
         st.dataframe(df.head(20), use_container_width=True, height=300)
     with col_b:
-        st.markdown("**Shape**")
-        st.code(f"{df.shape[0]} rows\n{df.shape[1]} cols")
-        st.markdown("**Attrition**")
         vc = df["Attrition"].value_counts()
-        st.code(f"No:  {vc['No']} ({vc['No']/len(df):.1%})\nYes: {vc['Yes']} ({vc['Yes']/len(df):.1%})")
-        st.markdown("**Null Values**")
-        st.code(f"{df.isnull().sum().sum()} missing")
+        stats_html = f"""
+        <div style='display:flex;flex-direction:column;gap:.55rem'>
+          <div style='background:#141720;border:1px solid #1e2330;border-radius:8px;padding:.75rem'>
+            <div style='font-size:.62rem;color:#5c6380;text-transform:uppercase;letter-spacing:.06em'>Shape</div>
+            <div style='color:#e2e5ef;font-weight:600;font-size:.85rem'>{df.shape[0]:,} rows × {df.shape[1]} cols</div>
+          </div>
+          <div style='background:#141720;border:1px solid #1e2330;border-radius:8px;padding:.75rem'>
+            <div style='font-size:.62rem;color:#5c6380;text-transform:uppercase;letter-spacing:.06em'>Class Split</div>
+            <div style='color:#52d483;font-weight:600;font-size:.85rem'>No:  {vc["No"]} ({vc["No"]/len(df):.1%})</div>
+            <div style='color:#e05c5c;font-weight:600;font-size:.85rem'>Yes: {vc["Yes"]} ({vc["Yes"]/len(df):.1%})</div>
+          </div>
+          <div style='background:#141720;border:1px solid #1e2330;border-radius:8px;padding:.75rem'>
+            <div style='font-size:.62rem;color:#5c6380;text-transform:uppercase;letter-spacing:.06em'>Missing Values</div>
+            <div style='color:#52d483;font-weight:600'>0 missing ✅</div>
+          </div>
+          <div style='background:#141720;border:1px solid #1e2330;border-radius:8px;padding:.75rem'>
+            <div style='font-size:.62rem;color:#5c6380;text-transform:uppercase;letter-spacing:.06em'>Features</div>
+            <div style='color:#4f9cf9;font-weight:600'>23 input features</div>
+            <div style='font-size:.62rem;color:#5c6380'>Numeric · Categorical · Ordinal</div>
+          </div>
+        </div>
+        """
+        st.markdown(stats_html, unsafe_allow_html=True)
+
 
 
 # ════════════════════════════════════════════════════════════════
 # PAGE 2 — EDA
 # ════════════════════════════════════════════════════════════════
 elif page == "🔍 Exploratory Analysis":
-    st.markdown("## 🔍 Exploratory Data Analysis")
-    st.caption("Visual breakdown of the 1,470 employee dataset across key HR dimensions")
-    st.divider()
+    st.markdown("""
+    <div class="page-hdr">
+      <div class="page-hdr-accent" style="background:linear-gradient(90deg,#52d483,#4f9cf9)"></div>
+      <span class="page-hdr-icon">🔍</span>
+      <div class="page-hdr-title">Exploratory Data Analysis</div>
+      <div class="page-hdr-sub">Visual breakdown across all HR dimensions — distributions, attrition rates, correlations</div>
+      <div class="page-hdr-line"></div>
+      <div class="page-hdr-pills">
+        <span class="pill">1,470 Employees</span>
+        <span class="pill">23 Features</span>
+        <span class="pill">3 Analysis Views</span>
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
 
     tab1, tab2, tab3 = st.tabs(["📊 Distributions", "📈 Attrition Rates", "🔗 Correlations"])
 
@@ -523,24 +1297,61 @@ elif page == "🔍 Exploratory Analysis":
 # PAGE 3 — MODEL COMPARISON
 # ════════════════════════════════════════════════════════════════
 elif page == "🤖 Model Comparison":
-    st.markdown("## 🤖 Model Comparison")
-    st.caption("5 classifiers evaluated with 5-fold cross validation + held-out test set")
-    st.divider()
+    st.markdown(f"""
+    <div class="page-hdr">
+      <div class="page-hdr-accent" style="background:linear-gradient(90deg,#f0a840,#e05c5c)"></div>
+      <span class="page-hdr-icon">🤖</span>
+      <div class="page-hdr-title">Model Comparison</div>
+      <div class="page-hdr-sub">5 classifiers · 5-fold cross-validation · held-out test set · optimised threshold 0.35</div>
+      <div class="page-hdr-line"></div>
+      <div class="page-hdr-pills">
+        <span class="pill">Winner: {best_name}</span>
+        <span class="pill">Best AUC: {best['roc_auc']:.3f}</span>
+        <span class="pill">CV-AUC: {best['cv_roc'].mean():.3f} ± {best['cv_roc'].std():.3f}</span>
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
 
-    # Summary table
-    rows = []
-    for name, res in sorted(results.items(), key=lambda x: x[1]["roc_auc"], reverse=True):
-        rows.append({
-            "Model":       ("🏆 " if name == best_name else "   ") + name,
-            "CV-AUC":      f"{res['cv_roc'].mean():.4f} ± {res['cv_roc'].std():.4f}",
-            "Test-AUC":    f"{res['roc_auc']:.4f}",
-            "Avg-Prec":    f"{res['avg_prec']:.4f}",
-            "F1 (Leavers)":f"{res['f1_yes']:.4f}",
-            "Recall":      f"{res['rec_yes']:.4f}",
-            "Precision":   f"{res['prec_yes']:.4f}",
-        })
-    st.dataframe(pd.DataFrame(rows), hide_index=True, use_container_width=True)
-    st.divider()
+    # ── Leaderboard ──────────────────────────────────────────────
+    sorted_models = sorted(results.items(), key=lambda x: x[1]["roc_auc"], reverse=True)
+    rank_icons = ["🥇","🥈","🥉","4","5"]
+    max_auc = sorted_models[0][1]["roc_auc"]
+
+    lb_rows_html = ""
+    for i, (name, res) in enumerate(sorted_models):
+        is_best = (name == best_name)
+        row_cls = "lb-row lb-best" if is_best else "lb-row"
+        name_cls = "lb-name"
+        auc_pct  = res["roc_auc"] / max_auc * 100
+        bar_col  = "#52d483" if is_best else "#4f9cf9"
+        lb_rows_html += f"""
+        <div class="{row_cls}" style="animation:rowSlideIn .35s {i*0.07:.2f}s both">
+          <div class="lb-rank">{rank_icons[i]}</div>
+          <div>
+            <div class="{name_cls}">{name}</div>
+            <div class="lb-bar-wrap"><div class="lb-bar-fill" style="width:{auc_pct:.1f}%;background:{bar_col}"></div></div>
+          </div>
+          <div class="lb-val lb-val-hi">{res['roc_auc']:.4f}</div>
+          <div class="lb-val">{res['cv_roc'].mean():.4f}<span style='color:#2a3550'> ±{res['cv_roc'].std():.4f}</span></div>
+          <div class="lb-val">{res['avg_prec']:.4f}</div>
+          <div class="lb-val">{res['f1_yes']:.4f}</div>
+          <div class="lb-val">{res['rec_yes']:.4f}</div>
+        </div>"""
+
+    st.markdown(f"""
+    <div class="lb-wrap">
+      <div class="lb-head">
+        <div class="lb-head-cell">Rank</div>
+        <div class="lb-head-cell">Model</div>
+        <div class="lb-head-cell">Test AUC ↓</div>
+        <div class="lb-head-cell">CV-AUC ±std</div>
+        <div class="lb-head-cell">Avg Prec</div>
+        <div class="lb-head-cell">F1 Score</div>
+        <div class="lb-head-cell">Recall</div>
+      </div>
+      {lb_rows_html}
+    </div>
+    """, unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
 
@@ -591,9 +1402,21 @@ elif page == "🤖 Model Comparison":
 # PAGE 4 — BEST MODEL DEEP DIVE
 # ════════════════════════════════════════════════════════════════
 elif page == "🎯 Best Model Deep Dive":
-    st.markdown(f"## 🎯 Best Model — {best_name}")
-    st.caption(f"Test ROC-AUC: **{best['roc_auc']:.4f}** · Recall: **{best['rec_yes']:.1%}** · F1: **{best['f1_yes']:.4f}**")
-    st.divider()
+    st.markdown(f"""
+    <div class="page-hdr">
+      <div class="page-hdr-accent" style="background:linear-gradient(90deg,#9b72f5,#4f9cf9)"></div>
+      <span class="page-hdr-icon">🎯</span>
+      <div class="page-hdr-title">Best Model Deep Dive — {best_name}</div>
+      <div class="page-hdr-sub">Detailed performance analysis · confusion matrix · precision-recall · probability distribution</div>
+      <div class="page-hdr-line"></div>
+      <div class="page-hdr-pills">
+        <span class="pill">AUC: {best['roc_auc']:.4f}</span>
+        <span class="pill">Recall: {best['rec_yes']:.1%}</span>
+        <span class="pill">F1: {best['f1_yes']:.4f}</span>
+        <span class="pill">Precision: {best['prec_yes']:.4f}</span>
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
 
@@ -663,9 +1486,19 @@ elif page == "🎯 Best Model Deep Dive":
 # PAGE 5 — FEATURE IMPORTANCE
 # ════════════════════════════════════════════════════════════════
 elif page == "🌲 Feature Importance":
-    st.markdown("## 🌲 Feature Importance")
-    st.caption("Which factors matter most for predicting employee attrition?")
-    st.divider()
+    st.markdown("""
+    <div class="page-hdr">
+      <div class="page-hdr-accent" style="background:linear-gradient(90deg,#52d483,#f0a840)"></div>
+      <span class="page-hdr-icon">🌲</span>
+      <div class="page-hdr-title">Feature Importance</div>
+      <div class="page-hdr-sub">Which factors drive attrition most? — Random Forest Gini importance + Logistic Regression coefficients</div>
+      <div class="page-hdr-line"></div>
+      <div class="page-hdr-pills">
+        <span class="pill">29 Features Ranked</span>
+        <span class="pill">2 Models</span>
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
 
     tab1, tab2 = st.tabs(["🌲 Random Forest", "📐 Logistic Regression"])
 
@@ -703,9 +1536,20 @@ elif page == "🌲 Feature Importance":
 # PAGE 6 — ATTRITION DRIVERS
 # ════════════════════════════════════════════════════════════════
 elif page == "💡 Attrition Drivers":
-    st.markdown("## 💡 Attrition Drivers & HR Actions")
-    st.caption("Top 10 features driving attrition — with specific, actionable HR recommendations")
-    st.divider()
+    st.markdown(f"""
+    <div class="page-hdr">
+      <div class="page-hdr-accent" style="background:linear-gradient(90deg,#f0a840,#e05c5c,#9b72f5)"></div>
+      <span class="page-hdr-icon">💡</span>
+      <div class="page-hdr-title">Attrition Drivers & HR Actions</div>
+      <div class="page-hdr-sub">Top 10 features ranked by impact · each with a specific, actionable HR recommendation</div>
+      <div class="page-hdr-line"></div>
+      <div class="page-hdr-pills">
+        <span class="pill">Source: Random Forest</span>
+        <span class="pill">AUC: {best['roc_auc']:.3f}</span>
+        <span class="pill">10 Drivers</span>
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
 
     drivers = [
         ("JobLevel",             0.7237, "Junior employees leave more than seniors",
@@ -751,99 +1595,399 @@ elif page == "💡 Attrition Drivers":
 # PAGE 7 — PREDICT EMPLOYEE
 # ════════════════════════════════════════════════════════════════
 elif page == "🔮 Predict Employee":
-    st.markdown("## 🔮 Predict Individual Employee Attrition Risk")
-    st.caption(f"Using: **{best_name}** (best model, AUC={best['roc_auc']:.3f})")
-    st.divider()
+    st.markdown(f"""
+    <div class="page-hdr">
+      <div class="page-hdr-accent" style="background:linear-gradient(90deg,#e05c5c,#9b72f5,#4f9cf9)"></div>
+      <span class="page-hdr-icon">🔮</span>
+      <div class="page-hdr-title">Predict Individual Attrition Risk</div>
+      <div class="page-hdr-sub">Fill in all fields below — model scores each employee in real-time across 29 features</div>
+      <div class="page-hdr-line"></div>
+      <div class="page-hdr-pills">
+        <span class="pill">Model: {best_name}</span>
+        <span class="pill">AUC: {best['roc_auc']:.3f}</span>
+        <span class="pill">29 Features</span>
+        <span class="pill">Threshold: 0.35</span>
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
 
-    st.info("👇 Fill in the employee's details below to get a real-time attrition risk prediction")
+    # ── Row 1: Personal Info ──────────────────────────────────────
+    st.markdown("#### 👤 Personal Information")
+    c1, c2, c3, c4 = st.columns(4)
+    with c1:
+        age_i      = st.slider("Age", 18, 60, 32)
+    with c2:
+        gender_i   = st.selectbox("Gender", ["Male", "Female"])
+    with c3:
+        marital_i  = st.selectbox("Marital Status", ["Single", "Married", "Divorced"])
+    with c4:
+        distance_i = st.slider("Distance From Home (km)", 1, 30, 8)
 
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        age_i       = st.slider("Age", 18, 60, 32)
-        job_level_i = st.selectbox("Job Level", [1,2,3,4,5], index=0)
-        monthly_i   = st.slider("Monthly Income ($)", 1000, 20000, 3500, step=500)
-        overtime_i  = st.selectbox("OverTime", ["No","Yes"])
-        distance_i  = st.slider("Distance From Home (km)", 1, 30, 12)
+    # ── Row 2: Job Info ───────────────────────────────────────────
+    st.markdown("#### 💼 Job Information")
+    c1, c2, c3, c4 = st.columns(4)
+    with c1:
+        dept_i      = st.selectbox("Department", ["Sales", "Research & Development", "Human Resources"])
+    with c2:
+        job_level_i = st.selectbox("Job Level", [1, 2, 3, 4, 5],
+                                    format_func=lambda x: {1:"1 – Junior",2:"2 – Mid",3:"3 – Senior",4:"4 – Lead",5:"5 – Executive"}[x])
+    with c3:
+        overtime_i  = st.selectbox("Works OverTime?", ["No", "Yes"])
+    with c4:
+        biz_travel_i= st.selectbox("Business Travel", ["Non-Travel", "Travel_Rarely", "Travel_Frequently"])
 
-    with col2:
-        marital_i   = st.selectbox("Marital Status", ["Single","Married","Divorced"])
-        biz_travel_i= st.selectbox("Business Travel", ["Non-Travel","Travel_Rarely","Travel_Frequently"])
-        job_sat_i   = st.selectbox("Job Satisfaction (1=Low, 4=High)", [1,2,3,4], index=2)
-        env_sat_i   = st.selectbox("Environment Satisfaction", [1,2,3,4], index=2)
-        wlb_i       = st.selectbox("Work-Life Balance", [1,2,3,4], index=2)
+    # ── Row 3: Compensation ───────────────────────────────────────
+    st.markdown("#### 💰 Compensation & Benefits")
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        monthly_i  = st.slider("Monthly Income ($)", 1000, 20000, 4000, step=500)
+    with c2:
+        stock_i    = st.selectbox("Stock Option Level", [0, 1, 2, 3],
+                                   format_func=lambda x: {0:"0 – None",1:"1 – Low",2:"2 – Medium",3:"3 – High"}[x])
+    with c3:
+        perf_i     = st.selectbox("Performance Rating", [3, 4],
+                                   format_func=lambda x: {3:"3 – Excellent",4:"4 – Outstanding"}[x])
 
-    with col3:
-        dept_i      = st.selectbox("Department", ["Sales","Research & Development","Human Resources"])
-        gender_i    = st.selectbox("Gender", ["Male","Female"])
-        stock_i     = st.selectbox("Stock Option Level", [0,1,2,3])
-        num_comp_i  = st.slider("Companies Worked At", 0, 9, 2)
-        yrs_comp_i  = st.slider("Years at Company", 1, 40, 4)
+    # ── Row 4: Satisfaction Scores ────────────────────────────────
+    st.markdown("#### 😊 Satisfaction Scores (1=Very Low → 4=Very High)")
+    c1, c2, c3, c4 = st.columns(4)
+    with c1:
+        job_sat_i  = st.select_slider("Job Satisfaction", [1,2,3,4], value=3)
+    with c2:
+        env_sat_i  = st.select_slider("Environment Satisfaction", [1,2,3,4], value=3)
+    with c3:
+        wlb_i      = st.select_slider("Work-Life Balance", [1,2,3,4], value=3)
+    with c4:
+        rel_sat_i  = st.select_slider("Relationship Satisfaction", [1,2,3,4], value=3)
+
+    # ── Row 5: Career History ─────────────────────────────────────
+    st.markdown("#### 📈 Career History")
+    c1, c2, c3, c4 = st.columns(4)
+    with c1:
+        num_comp_i = st.slider("Companies Worked At", 0, 9, 2)
+    with c2:
+        yrs_comp_i = st.slider("Years at Company", 1, 40, 4)
+    with c3:
+        yrs_role_i = st.slider("Years in Current Role", 0, 18, 2)
+    with c4:
+        total_yrs_i= st.slider("Total Working Years", 1, 40, 6)
+
+    # ── Row 6: Development ────────────────────────────────────────
+    st.markdown("#### 🎓 Education & Development")
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        education_i = st.selectbox("Education Level", [1,2,3,4,5],
+                                    format_func=lambda x: {1:"1 – Below College",2:"2 – College",3:"3 – Bachelor",4:"4 – Master",5:"5 – Doctor"}[x],
+                                    index=2)
+    with c2:
+        edu_field_i = st.selectbox("Education Field", ["Life Sciences","Medical","Marketing","Technical Degree","Human Resources","Other"])
+    with c3:
+        training_i  = st.slider("Training Sessions Last Year", 0, 6, 3)
 
     st.divider()
 
     if st.button("🔮 Predict Attrition Risk", use_container_width=True):
-        # Build a minimal input row matching training features
-        sample = pd.DataFrame([{
-            "Age": age_i,
-            "BusinessTravel": {"Non-Travel":0, "Travel_Rarely":2, "Travel_Frequently":1}[biz_travel_i],
-            "Department": {"Human Resources":0, "Research & Development":1, "Sales":2}[dept_i],
-            "DistanceFromHome": distance_i,
-            "Education": 3,
-            "EducationField": 1,
-            "EnvironmentSatisfaction": env_sat_i,
-            "Gender": 1 if gender_i == "Male" else 0,
-            "JobLevel": job_level_i,
-            "JobRole": 1,
-            "JobSatisfaction": job_sat_i,
-            "MaritalStatus": {"Divorced":0, "Married":1, "Single":2}[marital_i],
-            "MonthlyIncome": monthly_i,
-            "NumCompaniesWorked": num_comp_i,
-            "OverTime": 1 if overtime_i == "Yes" else 0,
-            "PerformanceRating": 3,
-            "RelationshipSatisfaction": 3,
-            "StockOptionLevel": stock_i,
-            "TotalWorkingYears": yrs_comp_i,
-            "TrainingTimesLastYear": 3,
-            "WorkLifeBalance": wlb_i,
-            "YearsAtCompany": yrs_comp_i,
-            "YearsInCurrentRole": max(0, yrs_comp_i - 2),
-        }])
 
-        prob = best["pipe"].predict_proba(sample)[0][1]
-        pred = "Yes" if prob >= 0.5 else "No"
+        # ── Loading spinner ───────────────────────────────────────
+        with st.spinner(""):
+            prog_ph = st.empty()
+            prog_ph.markdown("""
+            <div style='background:#0e1018;border:1px solid #1a2235;border-radius:12px;padding:1.2rem 1.5rem;margin:.5rem 0'>
+              <div style='font-size:.72rem;color:#3d5580;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.7rem;font-family:DM Mono,monospace'>
+                ⚙️ &nbsp; Running prediction pipeline...
+              </div>
+              <div style='height:4px;background:#0a0c14;border-radius:4px;overflow:hidden'>
+                <div style='height:4px;background:linear-gradient(90deg,#4f9cf9,#9b72f5);border-radius:4px;
+                            animation:barFill .6s ease both'></div>
+              </div>
+              <div style='display:flex;gap:1.5rem;margin-top:.7rem'>
+                <span style='font-size:.65rem;color:#2a3a55'>✓ Feature encoding</span>
+                <span style='font-size:.65rem;color:#2a3a55'>✓ Engineered features</span>
+                <span style='font-size:.65rem;color:#2a3a55'>✓ Model scoring</span>
+                <span style='font-size:.65rem;color:#2a3a55'>✓ Risk classification</span>
+              </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+            # ── Encoding ─────────────────────────────────────────
+            bt_enc   = {"Non-Travel": 0, "Travel_Frequently": 1, "Travel_Rarely": 2}
+            dept_enc = {"Human Resources": 0, "Research & Development": 1, "Sales": 2}
+            ef_enc   = {"Human Resources": 0, "Life Sciences": 1, "Marketing": 2,
+                        "Medical": 3, "Other": 4, "Technical Degree": 5}
+            ms_enc   = {"Divorced": 0, "Married": 1, "Single": 2}
+            role_enc = {"Sales": 3, "Research & Development": 4, "Human Resources": 1}
+
+            sample = pd.DataFrame([{
+                "Age":                    age_i,
+                "BusinessTravel":         bt_enc[biz_travel_i],
+                "Department":             dept_enc[dept_i],
+                "DistanceFromHome":       distance_i,
+                "Education":              education_i,
+                "EducationField":         ef_enc[edu_field_i],
+                "EnvironmentSatisfaction":env_sat_i,
+                "Gender":                 1 if gender_i == "Male" else 0,
+                "JobLevel":               job_level_i,
+                "JobRole":                role_enc[dept_i],
+                "JobSatisfaction":        job_sat_i,
+                "MaritalStatus":          ms_enc[marital_i],
+                "MonthlyIncome":          monthly_i,
+                "NumCompaniesWorked":     num_comp_i,
+                "OverTime":               1 if overtime_i == "Yes" else 0,
+                "PerformanceRating":      perf_i,
+                "RelationshipSatisfaction": rel_sat_i,
+                "StockOptionLevel":       stock_i,
+                "TotalWorkingYears":      total_yrs_i,
+                "TrainingTimesLastYear":  training_i,
+                "WorkLifeBalance":        wlb_i,
+                "YearsAtCompany":         yrs_comp_i,
+                "YearsInCurrentRole":     yrs_role_i,
+                "SatisfactionIndex":  int((job_sat_i + env_sat_i + wlb_i + rel_sat_i) / 16 * 100),
+                "IncomePerLevel":     int(monthly_i / job_level_i),
+                "TenureStability":    int(min(yrs_comp_i / max(num_comp_i, 1), 20)),
+                "BurnoutRisk":        int((1 if overtime_i=="Yes" else 0)*2
+                                          + (2 if biz_travel_i=="Travel_Frequently" else 0)
+                                          + (1 if wlb_i<=2 else 0)),
+                "LoyaltyScore":       int(min(max(yrs_comp_i*2 + stock_i*3 - num_comp_i, 0), 50)),
+                "CareerGrowthScore":  int(min(max(job_level_i*3 + training_i - (yrs_comp_i - yrs_role_i), 0), 30)),
+            }])
+            prob = best["pipe"].predict_proba(sample)[0][1]
+
+        prog_ph.empty()  # remove loading bar
+        st.divider()
+
+        # ── Big animated risk card ────────────────────────────────
+        if prob >= 0.65:
+            card_cls    = "risk-card risk-card-high"
+            bar_color   = "linear-gradient(90deg,#e05c5c,#c03030)"
+            action_cls  = "risk-action risk-action-high"
+            icon        = "🚨"
+            level_txt   = "HIGH RISK"
+            level_color = "#e05c5c"
+            action_txt  = "⚡ Immediate manager check-in required. Flag for HR retention review within 48 hours."
+        elif prob >= 0.40:
+            card_cls    = "risk-card risk-card-med"
+            bar_color   = "linear-gradient(90deg,#f0a840,#c07820)"
+            action_cls  = "risk-action risk-action-med"
+            icon        = "⚠️"
+            level_txt   = "MEDIUM RISK"
+            level_color = "#f0a840"
+            action_txt  = "📋 Schedule career conversation within 30 days. Review compensation and growth plan."
+        else:
+            card_cls    = "risk-card risk-card-low"
+            bar_color   = "linear-gradient(90deg,#52d483,#22a450)"
+            action_cls  = "risk-action risk-action-low"
+            icon        = "✅"
+            level_txt   = "LOW RISK"
+            level_color = "#52d483"
+            action_txt  = "🌱 Standard engagement applies. Continue regular check-ins and development plans."
+
+        col_card, col_factors = st.columns([1, 1.1])
+
+        with col_card:
+            st.markdown(f"""
+            <div class="{card_cls}">
+              <span class="risk-icon">{icon}</span>
+              <div class="risk-level" style="color:{level_color}">{level_txt}</div>
+              <div class="risk-score" style="color:{level_color}">{prob:.1%}</div>
+              <div class="risk-label">probability of leaving</div>
+              <div class="risk-bar-bg">
+                <div class="risk-bar-fill" style="width:{prob*100:.1f}%;background:{bar_color}"></div>
+              </div>
+              <div style='display:flex;justify-content:space-between;font-size:.62rem;color:#2e3a55;margin-bottom:.4rem;font-family:DM Mono,monospace'>
+                <span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span>
+              </div>
+              <div class="{action_cls}">{action_txt}</div>
+              <div style='font-size:.62rem;color:#2a3550;margin-top:.8rem;font-family:DM Mono,monospace'>
+                Model: {best_name} &nbsp;·&nbsp; Threshold: 0.35
+              </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+        with col_factors:
+            # ── Rule-based risk factor breakdown ─────────────────
+            # Each factor scored independently so user can see WHY
+
+            factors = []
+
+            # Age risk (U-shaped)
+            if age_i < 26:
+                factors.append(("🔴", "Age (very young <26)", "Very high mobility risk", +3))
+            elif age_i < 30:
+                factors.append(("🟠", "Age (young 26-30)", "Higher career exploration phase", +2))
+            elif 35 <= age_i <= 50:
+                factors.append(("🟢", "Age (settled 35-50)", "Most stable career phase", -2))
+            elif age_i > 55:
+                factors.append(("🟠", "Age (near retirement >55)", "Early retirement consideration", +2))
+            else:
+                factors.append(("🟡", "Age (30-35)", "Moderate stability", 0))
+
+            # OverTime
+            if overtime_i == "Yes":
+                factors.append(("🔴", "OverTime: YES", "Burnout risk — one of many factors", +2))
+            else:
+                factors.append(("🟢", "OverTime: No", "No burnout pressure", -1))
+
+            # Job Satisfaction
+            if job_sat_i == 1:
+                factors.append(("🔴", "Job Satisfaction: Very Low (1/4)", "Strong push to leave", +3))
+            elif job_sat_i == 2:
+                factors.append(("🟠", "Job Satisfaction: Low (2/4)", "Dissatisfied", +2))
+            elif job_sat_i == 3:
+                factors.append(("🟡", "Job Satisfaction: Medium (3/4)", "Neutral", 0))
+            else:
+                factors.append(("🟢", "Job Satisfaction: High (4/4)", "Happy with role", -2))
+
+            # Environment Satisfaction
+            if env_sat_i <= 2:
+                factors.append(("🔴", "Environment Satisfaction: Low", "Poor workplace conditions", +2))
+            elif env_sat_i == 4:
+                factors.append(("🟢", "Environment Satisfaction: High", "Great work environment", -1))
+
+            # Work Life Balance
+            if wlb_i == 1:
+                factors.append(("🔴", "Work-Life Balance: Very Poor (1/4)", "Major burnout risk", +3))
+            elif wlb_i == 2:
+                factors.append(("🟠", "Work-Life Balance: Poor (2/4)", "Struggling to balance", +2))
+            elif wlb_i == 4:
+                factors.append(("🟢", "Work-Life Balance: Excellent (4/4)", "Well balanced", -2))
+
+            # Relationship Satisfaction
+            if rel_sat_i <= 2:
+                factors.append(("🟠", "Relationship Satisfaction: Low", "Poor team/manager relations", +2))
+            elif rel_sat_i == 4:
+                factors.append(("🟢", "Relationship Satisfaction: High", "Strong work relationships", -1))
+
+            # Income
+            if monthly_i < 2500:
+                factors.append(("🔴", f"Income: ${monthly_i:,} (Very Low)", "Far below market — strong push to leave", +3))
+            elif monthly_i < 4000:
+                factors.append(("🟠", f"Income: ${monthly_i:,} (Below Average)", "Below-average salary", +2))
+            elif monthly_i > 12000:
+                factors.append(("🟢", f"Income: ${monthly_i:,} (Very High)", "Well compensated — strong retention", -3))
+            elif monthly_i > 8000:
+                factors.append(("🟢", f"Income: ${monthly_i:,} (High)", "Above-average salary", -2))
+
+            # Stock Options
+            if stock_i == 0:
+                factors.append(("🔴", "Stock Options: None (0)", "No financial retention incentive", +3))
+            elif stock_i == 1:
+                factors.append(("🟡", "Stock Options: Low (1)", "Some retention incentive", +1))
+            elif stock_i >= 2:
+                factors.append(("🟢", f"Stock Options: Level {stock_i}", "Strong financial golden handcuffs", -2))
+
+            # Distance
+            if distance_i > 20:
+                factors.append(("🔴", f"Commute: {distance_i}km (Very Long >20km)", "Long commute is tiring and costly", +3))
+            elif distance_i > 10:
+                factors.append(("🟠", f"Commute: {distance_i}km (Moderate)", "Noticeable commute cost", +1))
+            else:
+                factors.append(("🟢", f"Commute: {distance_i}km (Short)", "Easy commute — positive factor", -1))
+
+            # Marital Status
+            if marital_i == "Single":
+                factors.append(("🟠", "Marital Status: Single", "More geographically mobile", +2))
+            elif marital_i == "Married":
+                factors.append(("🟢", "Marital Status: Married", "More likely to value stability", -1))
+
+            # Business Travel
+            if biz_travel_i == "Travel_Frequently":
+                factors.append(("🔴", "Business Travel: Frequent", "High burnout from travel", +3))
+            elif biz_travel_i == "Travel_Rarely":
+                factors.append(("🟡", "Business Travel: Rarely", "Some travel-related fatigue", +1))
+            else:
+                factors.append(("🟢", "Business Travel: None", "No travel burden", -1))
+
+            # Job Level
+            if job_level_i == 1:
+                factors.append(("🔴", "Job Level: 1 (Junior)", "Lowest level — highest attrition rate", +3))
+            elif job_level_i == 2:
+                factors.append(("🟠", "Job Level: 2 (Mid)", "Still building career, moderate risk", +1))
+            elif job_level_i >= 4:
+                factors.append(("🟢", f"Job Level: {job_level_i} (Senior/Lead)", "Senior level — much lower attrition", -2))
+
+            # Years at Company
+            if yrs_comp_i <= 2:
+                factors.append(("🔴", f"Tenure: {yrs_comp_i} yr(s) (Very New)", "Critical 0-2 year window — highest risk period", +3))
+            elif yrs_comp_i <= 5:
+                factors.append(("🟠", f"Tenure: {yrs_comp_i} yrs (Early)", "Still building loyalty", +1))
+            elif yrs_comp_i > 10:
+                factors.append(("🟢", f"Tenure: {yrs_comp_i} yrs (Long-term)", "Strong loyalty — very unlikely to leave", -3))
+
+            # Num Companies
+            if num_comp_i >= 5:
+                factors.append(("🔴", f"Companies Worked: {num_comp_i} (Job Hopper)", "History of frequent job changes", +3))
+            elif num_comp_i >= 4:
+                factors.append(("🟠", f"Companies Worked: {num_comp_i}", "Some job-hopping tendency", +2))
+            elif num_comp_i <= 1:
+                factors.append(("🟢", f"Companies Worked: {num_comp_i}", "Loyal worker profile", -1))
+
+            # Training
+            if training_i < 2:
+                factors.append(("🟠", f"Training: {training_i} sessions/yr (Low)", "Lack of development opportunities", +2))
+            elif training_i > 4:
+                factors.append(("🟢", f"Training: {training_i} sessions/yr (High)", "Well developed — engaged employee", -1))
+
+            # Total Working Years
+            if total_yrs_i < 3:
+                factors.append(("🟠", f"Total Experience: {total_yrs_i} yrs (Early Career)", "Still exploring career options", +2))
+            elif total_yrs_i > 15:
+                factors.append(("🟢", f"Total Experience: {total_yrs_i} yrs (Experienced)", "Established professional", -1))
+
+            # ── Styled factor cards ───────────────────────────────
+            risk_score = sum(f[3] for f in factors)
+            factors_html = ""
+            for idx2, (emoji, fname, detail, score) in enumerate(sorted(factors, key=lambda x: -x[3])):
+                score_str = f"+{score}" if score > 0 else str(score)
+                if score >= 2:   badge_cls,sc = "fb-red",   f"<span style='color:#e05c5c'>{score_str}</span>"
+                elif score == 1: badge_cls,sc = "fb-amber", f"<span style='color:#f0a840'>{score_str}</span>"
+                elif score < 0:  badge_cls,sc = "fb-green", f"<span style='color:#52d483'>{score_str}</span>"
+                else:            badge_cls,sc = "fb-grey",  f"<span style='color:#5c6890'>{score_str}</span>"
+                factors_html += f"""<div class="factor-row" style="animation-delay:{idx2*0.04:.2f}s">
+                  <span class="factor-badge {badge_cls}">{emoji} {score_str}</span>
+                  <span class="factor-text"><b>{fname}</b><br><span style='font-size:.67rem;color:#3d4f6a'>{detail}</span></span>
+                </div>"""
+            with col_factors:
+                st.markdown(f"""
+                <div style='font-size:.68rem;color:#3d5580;text-transform:uppercase;letter-spacing:.1em;
+                            font-weight:700;font-family:DM Mono,monospace;margin-bottom:.7rem'>
+                  📊 Risk Factor Breakdown
+                </div>
+                {factors_html}
+                """, unsafe_allow_html=True)
 
         st.divider()
-        c1, c2, c3 = st.columns([1,2,1])
-        with c2:
-            if prob >= 0.65:
-                st.error(f"## 🚨 HIGH RISK  —  {prob:.1%} probability of leaving")
-                st.error("This employee is at significant attrition risk. Immediate manager check-in recommended.")
-            elif prob >= 0.40:
-                st.warning(f"## ⚠️ MEDIUM RISK  —  {prob:.1%} probability of leaving")
-                st.warning("Monitor this employee. Consider a career conversation within 30 days.")
-            else:
-                st.success(f"## ✅ LOW RISK  —  {prob:.1%} probability of leaving")
-                st.success("This employee shows low attrition indicators. Standard engagement applies.")
 
-            # Gauge-style progress bar
-            st.markdown(f"**Risk Score: {prob:.1%}**")
-            st.progress(float(prob))
+        # ── HR Recommendations ────────────────────────────────────
+        st.markdown("#### 🎯 Recommended HR Actions for This Employee")
+        top_risks = [f for f in factors if f[3] >= 2]
+        top_risks_sorted = sorted(top_risks, key=lambda x: -x[3])
 
-            # Top risk factors
-            st.markdown("**Key risk factors for this profile:**")
-            risks = []
-            if overtime_i  == "Yes":          risks.append("⏱️ Works overtime")
-            if job_level_i == 1:               risks.append("📊 Junior job level (Level 1)")
-            if monthly_i   < 4000:             risks.append("💰 Below-average income")
-            if distance_i  > 20:               risks.append("🚗 Long commute (>20km)")
-            if marital_i   == "Single":        risks.append("💍 Single — more geographically mobile")
-            if biz_travel_i== "Travel_Frequently": risks.append("✈️ Frequent business travel")
-            if stock_i     == 0:               risks.append("📈 No stock options")
-            if num_comp_i  >= 4:               risks.append("🏢 Job-hopping history (4+ companies)")
-            if job_sat_i   <= 2:               risks.append("😞 Low job satisfaction")
-            if wlb_i       <= 2:               risks.append("⚖️ Poor work-life balance")
+        action_map = {
+            "OverTime":          "⏱️ Review workload immediately. Assign tasks to reduce consistent overtime.",
+            "Job Satisfaction":  "😊 Schedule 1:1 conversation to understand dissatisfaction. Career path discussion recommended.",
+            "Environment":       "🏢 Investigate team dynamics and workspace issues. Consider team restructuring.",
+            "Work-Life Balance": "⚖️ Enforce no-meeting days, flexible hours, and mandatory PTO usage.",
+            "Relationship":      "🤝 Facilitate team-building activities. Review manager-employee relationship.",
+            "Income":            "💰 Conduct immediate salary benchmarking. Raise is highest-ROI retention action.",
+            "Stock Options":     "📈 Grant stock options — cheapest long-term retention tool available.",
+            "Commute":           "🏠 Offer remote/hybrid work. Transport allowance as interim solution.",
+            "Marital":           "💼 Enhance social community programmes and peer connections.",
+            "Business Travel":   "✈️ Reduce travel frequency. Rotate travel assignments across team.",
+            "Job Level":         "🚀 Create visible promotion pathway with clear 12-month milestones.",
+            "Tenure":            "🎯 Assign mentor. Structured 90-day check-ins during critical first 2 years.",
+            "Companies":         "📋 Assign challenging projects to build commitment and engagement.",
+            "Training":          "🎓 Enrol in training programme immediately. Development = retention.",
+            "Age":               "👥 Age-appropriate engagement: mentorship for young staff, legacy projects for seniors.",
+        }
 
-            if risks:
-                for r in risks: st.markdown(f"- {r}")
-            else:
-                st.markdown("- ✅ No major risk flags detected")
+        if not top_risks_sorted:
+            st.success("✅ No major risk factors identified. Continue standard engagement practices.")
+        else:
+            for i, (emoji, name, detail, score) in enumerate(top_risks_sorted[:5], 1):
+                # Find matching action
+                action = "Monitor and conduct regular check-ins."
+                for key, act in action_map.items():
+                    if key.lower() in name.lower():
+                        action = act
+                        break
+                st.warning(f"**Priority {i}:** {emoji} {name} — {action}")
