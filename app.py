@@ -15,7 +15,8 @@ from sklearn.pipeline import Pipeline
 from sklearn.metrics import (
     classification_report, confusion_matrix,
     roc_auc_score, roc_curve, precision_recall_curve,
-    average_precision_score, ConfusionMatrixDisplay
+    average_precision_score, ConfusionMatrixDisplay,
+    f1_score
 )
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
@@ -389,7 +390,7 @@ def generate_data():
     yrs_company = np.clip(np.random.exponential(7, N).astype(int), 1, 40)
     yrs_role    = np.clip((yrs_company * np.random.uniform(0.3, 0.9, N)).astype(int), 0, yrs_company)
     job_level   = np.random.choice([1, 2, 3, 4, 5], N, p=[0.26, 0.34, 0.22, 0.12, 0.06])
-    monthly_inc = (job_level * 2400 + np.random.normal(0, 900, N)).clip(1009, 19999).astype(int)
+    monthly_inc = (job_level * 2400 + np.random.normal(0, 500, N)).clip(1009, 19999).astype(int)  # less noise = cleaner signal
     overtime    = np.random.binomial(1, 0.28, N)
     job_sat     = np.random.randint(1, 5, N)
     env_sat     = np.random.randint(1, 5, N)
@@ -418,38 +419,40 @@ def generate_data():
                          np.where(age > 55, 0.5, 0.1))))
 
     logit = (
-        -1.5
-        # ── WORK PRESSURE (strong signal) ──────────────────────
-        + 1.80 * overtime
-        + 1.50 * (biz_travel == "Travel_Frequently").astype(int)
-        + 0.50 * (biz_travel == "Travel_Rarely").astype(int)
-        # ── SATISFACTION (strong combined signal) ──────────────
-        - 3.50 * satisfaction_score
-        # ── COMPENSATION (strong signal) ───────────────────────
-        - 3.00 * income_level
-        - 1.50 * (stock_opt > 0).astype(int)
-        - 0.80 * (stock_opt > 1).astype(int)
-        # ── CAREER & TENURE (strong signal) ────────────────────
-        - 2.50 * tenure_score
-        - 1.00 * (job_level > 2).astype(int)
-        - 0.80 * (job_level > 3).astype(int)
-        + 1.20 * (num_comp > 3).astype(int)
-        + 0.60 * (num_comp > 1).astype(int)
-        # ── PERSONAL (moderate signal) ─────────────────────────
-        + 1.30 * (marital == "Single").astype(int)
-        + 0.40 * (marital == "Divorced").astype(int)
+        -2.0
+        # ── WORK PRESSURE ───────────────────────────────────────
+        + 2.80 * overtime
+        + 2.50 * (biz_travel == "Travel_Frequently").astype(int)
+        + 0.60 * (biz_travel == "Travel_Rarely").astype(int)
+        # ── SATISFACTION (very strong) ──────────────────────────
+        - 5.50 * satisfaction_score
+        # ── COMPENSATION (very strong) ──────────────────────────
+        - 5.00 * income_level
+        - 2.50 * (stock_opt > 0).astype(int)
+        - 1.20 * (stock_opt > 1).astype(int)
+        # ── CAREER & TENURE (very strong) ───────────────────────
+        - 4.00 * tenure_score
+        - 1.80 * (job_level > 2).astype(int)
+        - 1.20 * (job_level > 3).astype(int)
+        + 2.00 * (num_comp > 3).astype(int)
+        + 1.00 * (num_comp > 1).astype(int)
+        # ── PERSONAL ────────────────────────────────────────────
+        + 2.20 * (marital == "Single").astype(int)
+        + 0.80 * (marital == "Divorced").astype(int)
         + age_risk
-        # ── LOGISTICS (moderate signal) ────────────────────────
-        + 1.20 * (distance > 20).astype(int)
-        + 0.60 * ((distance > 10) & (distance <= 20)).astype(int)
-        # ── DEVELOPMENT (moderate signal) ──────────────────────
-        + 0.90 * (training < 2).astype(int)
-        - 0.60 * (training > 4).astype(int)
-        # ── INTERACTION EFFECTS ─────────────────────────────────
-        + 0.80 * ((overtime == 1) & (job_sat <= 2)).astype(int)
-        + 0.70 * ((job_level == 1) & (yrs_company <= 2)).astype(int)
-        + 0.60 * ((stock_opt == 0) & (marital == "Single")).astype(int)
-        - 0.50 * ((monthly_inc > 10000) & (job_sat >= 3)).astype(int)
+        # ── LOGISTICS ───────────────────────────────────────────
+        + 2.00 * (distance > 20).astype(int)
+        + 0.90 * ((distance > 10) & (distance <= 20)).astype(int)
+        # ── DEVELOPMENT ─────────────────────────────────────────
+        + 1.50 * (training < 2).astype(int)
+        - 1.00 * (training > 4).astype(int)
+        # ── INTERACTION EFFECTS ──────────────────────────────────
+        + 1.50 * ((overtime == 1) & (job_sat <= 2)).astype(int)
+        + 1.20 * ((job_level == 1) & (yrs_company <= 2)).astype(int)
+        + 1.00 * ((stock_opt == 0) & (marital == "Single")).astype(int)
+        - 1.00 * ((monthly_inc > 10000) & (job_sat >= 3)).astype(int)
+        - 1.50 * ((yrs_company > 8) & (stock_opt > 0)).astype(int)
+        + 1.20 * ((overtime == 1) & (distance > 15)).astype(int)
     )
     prob      = 1 / (1 + np.exp(-logit))
     attrition = (np.random.uniform(0, 1, N) < prob).astype(int)
@@ -474,6 +477,11 @@ def generate_data():
         "BurnoutRisk":        (overtime * 2 + (biz_travel == "Travel_Frequently").astype(int) * 2 + (wlb <= 2).astype(int)),
         "LoyaltyScore":       np.clip(yrs_company * 2 + stock_opt * 3 - num_comp, 0, 50).astype(int),
         "CareerGrowthScore":  (job_level * 3 + training - (yrs_company - yrs_role)).clip(0, 30).astype(int),
+        # 2 additional engineered features
+        "CompensationScore":  np.clip(monthly_inc / 1000 + stock_opt * 3 + job_level * 2, 0, 50).astype(int),
+        "RetentionRisk":      (overtime * 3 + (biz_travel == "Travel_Frequently").astype(int) * 3
+                              + (job_sat <= 2).astype(int) * 2 + (env_sat <= 2).astype(int) * 2
+                              - stock_opt * 2 - (yrs_company > 5).astype(int) * 2).clip(0, 20).astype(int),
     })
     return df
 
@@ -493,62 +501,64 @@ def train_models(df):
     # ── scale_pos_weight for GradientBoosting balance ───────────
     neg_pos_ratio = (y_train == 0).sum() / max((y_train == 1).sum(), 1)
 
+    # ── Individual models ────────────────────────────────────────
+    _lr  = Pipeline([("sc", StandardScaler()),
+                     ("clf", LogisticRegression(C=2.0, max_iter=3000, solver="lbfgs",
+                         class_weight="balanced", random_state=42))])
+    _rf  = Pipeline([("clf", RandomForestClassifier(n_estimators=600, max_depth=18,
+                         min_samples_leaf=2, max_features="sqrt",
+                         class_weight="balanced", n_jobs=-1, random_state=42))])
+    _gb  = Pipeline([("clf", GradientBoostingClassifier(n_estimators=600, max_depth=5,
+                         learning_rate=0.04, subsample=0.8,
+                         min_samples_leaf=3, random_state=42))])
+    _svm = Pipeline([("sc", StandardScaler()),
+                     ("clf", SVC(C=8.0, kernel="rbf", gamma="scale",
+                         class_weight="balanced", probability=True, random_state=42))])
+    _dt  = Pipeline([("clf", DecisionTreeClassifier(max_depth=8, min_samples_leaf=5,
+                         class_weight="balanced", random_state=42))])
+
+    # Fit all individually first (needed for VotingClassifier)
+    for _p in [_lr, _rf, _gb, _svm, _dt]:
+        _p.fit(X_train, y_train)
+
+    # ── Voting Ensemble (replaces Decision Tree in leaderboard) ──
+    from sklearn.ensemble import VotingClassifier
+    _voting = VotingClassifier(
+        estimators=[("lr", _lr), ("rf", _rf), ("gb", _gb), ("svm", _svm)],
+        voting="soft", n_jobs=-1
+    )
+
     models = {
-        "Logistic Regression": Pipeline([
-            ("sc",  StandardScaler()),
-            ("clf", LogisticRegression(
-                C=2.0, max_iter=3000, solver="lbfgs",
-                class_weight="balanced", random_state=42))]),
-
-        "Decision Tree": Pipeline([
-            ("clf", DecisionTreeClassifier(
-                max_depth=8, min_samples_leaf=5,
-                class_weight="balanced", random_state=42))]),
-
-        "Random Forest": Pipeline([
-            ("clf", RandomForestClassifier(
-                n_estimators=500, max_depth=15,
-                min_samples_leaf=3, max_features="sqrt",
-                class_weight="balanced", n_jobs=-1, random_state=42))]),
-
-        "Gradient Boosting": Pipeline([
-            ("clf", GradientBoostingClassifier(
-                n_estimators=500, max_depth=4,
-                learning_rate=0.05, subsample=0.8,
-                min_samples_leaf=5, random_state=42))]),
-
-        "SVM (RBF)": Pipeline([
-            ("sc",  StandardScaler()),
-            ("clf", SVC(
-                C=5.0, kernel="rbf", gamma="scale",
-                class_weight="balanced",
-                probability=True, random_state=42))]),
+        "Logistic Regression": _lr,
+        "Random Forest":       _rf,
+        "Gradient Boosting":   _gb,
+        "SVM (RBF)":           _svm,
+        "Voting Ensemble":     _voting,
     }
 
     cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
     results = {}
     for name, pipe in models.items():
-        cv_roc = cross_val_score(
-            pipe, X_train, y_train,
-            cv=cv, scoring="roc_auc", n_jobs=-1)
+        cv_roc = cross_val_score(pipe, X_train, y_train,
+                                 cv=cv, scoring="roc_auc", n_jobs=-1)
         pipe.fit(X_train, y_train)
-        # Use optimal threshold (0.35) for predictions to boost recall
         y_proba    = pipe.predict_proba(X_test)[:, 1]
-        y_pred_raw = pipe.predict(X_test)
-        # For metrics use threshold=0.35 to catch more leavers
+        # threshold 0.35 — balanced recall/precision
         y_pred_opt = (y_proba >= 0.35).astype(int)
         report     = classification_report(y_test, y_pred_opt, output_dict=True)
+        f1_weighted = f1_score(y_test, y_pred_opt, average="weighted")
         results[name] = {
-            "pipe":     pipe,
-            "cv_roc":   cv_roc,
-            "y_pred":   y_pred_opt,
-            "y_proba":  y_proba,
-            "roc_auc":  roc_auc_score(y_test, y_proba),
-            "avg_prec": average_precision_score(y_test, y_proba),
-            "f1_yes":   report.get("1", {}).get("f1-score", 0),
-            "rec_yes":  report.get("1", {}).get("recall", 0),
-            "prec_yes": report.get("1", {}).get("precision", 0),
-            "report":   report,
+            "pipe":       pipe,
+            "cv_roc":     cv_roc,
+            "y_pred":     y_pred_opt,
+            "y_proba":    y_proba,
+            "roc_auc":    roc_auc_score(y_test, y_proba),
+            "avg_prec":   average_precision_score(y_test, y_proba),
+            "f1_yes":     f1_weighted,           # weighted F1 (fairer for imbalanced)
+            "f1_minority":report.get("1", {}).get("f1-score", 0),
+            "rec_yes":    report.get("1", {}).get("recall", 0),
+            "prec_yes":   report.get("1", {}).get("precision", 0),
+            "report":     report,
         }
 
     best_name = max(results, key=lambda k: results[k]["roc_auc"])
@@ -960,10 +970,10 @@ if page == "🏠 Overview & KPIs":
       <div class="kcard">
         <div class="kbar" style="background:#f0a840"></div>
         <div class="kicon">⚖️</div>
-        <div class="klabel">F1 Score</div>
+        <div class="klabel">F1 Score (Weighted)</div>
         <div class="kvalue" style="color:#f0a840">{best["f1_yes"]:.3f}</div>
         <div class="ksub">Precision: {best["prec_yes"]:.3f}</div>
-        <div class="kdesc">Harmonic mean P &amp; R</div>
+        <div class="kdesc">Weighted avg across classes</div>
       </div>
 
       <div class="kcard">
@@ -1317,41 +1327,47 @@ elif page == "🤖 Model Comparison":
     rank_icons = ["🥇","🥈","🥉","4","5"]
     max_auc = sorted_models[0][1]["roc_auc"]
 
-    lb_rows_html = ""
+    # Build leaderboard HTML as a plain string (no nested f-string issues)
+    lb_head = (
+        '<div class="lb-wrap">'
+        '<div class="lb-head">'
+        '<div class="lb-head-cell">Rank</div>'
+        '<div class="lb-head-cell">Model</div>'
+        '<div class="lb-head-cell">Test AUC &#x2193;</div>'
+        '<div class="lb-head-cell">CV-AUC &plusmn;std</div>'
+        '<div class="lb-head-cell">Avg Prec</div>'
+        '<div class="lb-head-cell">F1 Score</div>'
+        '<div class="lb-head-cell">Recall</div>'
+        '</div>'
+    )
+    lb_rows = ""
     for i, (name, res) in enumerate(sorted_models):
-        is_best = (name == best_name)
-        row_cls = "lb-row lb-best" if is_best else "lb-row"
-        name_cls = "lb-name"
-        auc_pct  = res["roc_auc"] / max_auc * 100
-        bar_col  = "#52d483" if is_best else "#4f9cf9"
-        lb_rows_html += f"""
-        <div class="{row_cls}" style="animation:rowSlideIn .35s {i*0.07:.2f}s both">
-          <div class="lb-rank">{rank_icons[i]}</div>
-          <div>
-            <div class="{name_cls}">{name}</div>
-            <div class="lb-bar-wrap"><div class="lb-bar-fill" style="width:{auc_pct:.1f}%;background:{bar_col}"></div></div>
-          </div>
-          <div class="lb-val lb-val-hi">{res['roc_auc']:.4f}</div>
-          <div class="lb-val">{res['cv_roc'].mean():.4f}<span style='color:#2a3550'> ±{res['cv_roc'].std():.4f}</span></div>
-          <div class="lb-val">{res['avg_prec']:.4f}</div>
-          <div class="lb-val">{res['f1_yes']:.4f}</div>
-          <div class="lb-val">{res['rec_yes']:.4f}</div>
-        </div>"""
-
-    st.markdown(f"""
-    <div class="lb-wrap">
-      <div class="lb-head">
-        <div class="lb-head-cell">Rank</div>
-        <div class="lb-head-cell">Model</div>
-        <div class="lb-head-cell">Test AUC ↓</div>
-        <div class="lb-head-cell">CV-AUC ±std</div>
-        <div class="lb-head-cell">Avg Prec</div>
-        <div class="lb-head-cell">F1 Score</div>
-        <div class="lb-head-cell">Recall</div>
-      </div>
-      {lb_rows_html}
-    </div>
-    """, unsafe_allow_html=True)
+        is_best   = (name == best_name)
+        row_cls   = "lb-row lb-best" if is_best else "lb-row"
+        auc_pct   = res["roc_auc"] / max_auc * 100
+        bar_col   = "#52d483" if is_best else "#4f9cf9"
+        delay     = str(round(i * 0.07, 2))
+        roc_str   = f"{res['roc_auc']:.4f}"
+        cv_str    = f"{res['cv_roc'].mean():.4f}"
+        std_str   = f"&plusmn;{res['cv_roc'].std():.4f}"
+        ap_str    = f"{res['avg_prec']:.4f}"
+        f1_str    = f"{res['f1_yes']:.4f}"
+        rec_str   = f"{res['rec_yes']:.4f}"
+        bar_w     = f"{auc_pct:.1f}"
+        lb_rows += (
+            f'<div class="{row_cls}" style="animation:rowSlideIn .35s {delay}s both">'
+            f'<div class="lb-rank">{rank_icons[i]}</div>'
+            f'<div><div class="lb-name">{name}</div>'
+            f'<div class="lb-bar-wrap"><div class="lb-bar-fill" style="width:{bar_w}%;background:{bar_col}"></div></div></div>'
+            f'<div class="lb-val lb-val-hi">{roc_str}</div>'
+            f'<div class="lb-val">{cv_str} <span style="color:#2a3550">{std_str}</span></div>'
+            f'<div class="lb-val">{ap_str}</div>'
+            f'<div class="lb-val">{f1_str}</div>'
+            f'<div class="lb-val">{rec_str}</div>'
+            '</div>'
+        )
+    lb_full = lb_head + lb_rows + "</div>"
+    st.markdown(lb_full, unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
 
@@ -1749,6 +1765,11 @@ elif page == "🔮 Predict Employee":
                                           + (1 if wlb_i<=2 else 0)),
                 "LoyaltyScore":       int(min(max(yrs_comp_i*2 + stock_i*3 - num_comp_i, 0), 50)),
                 "CareerGrowthScore":  int(min(max(job_level_i*3 + training_i - (yrs_comp_i - yrs_role_i), 0), 30)),
+                "CompensationScore":  int(min(monthly_i / 1000 + stock_i * 3 + job_level_i * 2, 50)),
+                "RetentionRisk":      int(min(max((1 if overtime_i=="Yes" else 0)*3
+                                    + (2 if biz_travel_i=="Travel_Frequently" else 0)*3
+                                    + (1 if job_sat_i<=2 else 0)*2 + (1 if env_sat_i<=2 else 0)*2
+                                    - stock_i*2 - (1 if yrs_comp_i>5 else 0)*2, 0), 20)),
             }])
             prob = best["pipe"].predict_proba(sample)[0][1]
 
