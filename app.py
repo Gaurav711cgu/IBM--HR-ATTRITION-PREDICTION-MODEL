@@ -27,81 +27,92 @@ warnings.filterwarnings("ignore")
 
 # ── Page config ───────────────────────────────────────────────────
 st.set_page_config(
-    page_title="IBM HR Attrition · Analytics",
-    page_icon="📊",
+    page_title="Attrition Surveillance · System",
+    page_icon="👁️",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# ── Custom CSS ────────────────────────────────────────────────────
+# ── Custom CSS  (Cosmic Purple Eye theme) ─────────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
-html, body, [class*="css"] { font-family: 'DM Sans', sans-serif; }
+html, body, [class*="css"] { font-family: 'Outfit', sans-serif; }
 
-/* Main background */
-.stApp { background-color: #0d0f14; }
-
-/* Sidebar */
-[data-testid="stSidebar"] {
-    background-color: #141720 !important;
-    border-right: 1px solid #1e2330;
+/* ── Main background with violet nebula glow ── */
+.stApp {
+    background-color: #07050f;
+    background-image:
+        radial-gradient(ellipse 70% 50% at 20% 10%, rgba(139,92,246,.07) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(236,72,153,.05) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 60% at 50% 50%, rgba(99,102,241,.04) 0%, transparent 70%);
 }
-[data-testid="stSidebar"] * { color: #e2e5ef !important; }
 
-/* Metric cards */
+/* ── Sidebar ── */
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg,#05030e 0%,#0a0718 70%,#06040f 100%) !important;
+    border-right: 1px solid #1e1535 !important;
+}
+[data-testid="stSidebar"] * { color: #e2d9f3 !important; }
+
+/* ── Metric cards ── */
 [data-testid="metric-container"] {
-    background: #141720;
-    border: 1px solid #1e2330;
+    background: #0f0d1a;
+    border: 1px solid #1e1535;
     border-radius: 12px;
     padding: 1rem 1.25rem;
 }
-[data-testid="metric-container"] label { color: #5c6380 !important; font-size: 0.72rem !important; }
-[data-testid="metric-container"] [data-testid="stMetricValue"] { color: #e2e5ef !important; font-size: 1.8rem !important; }
-[data-testid="metric-container"] [data-testid="stMetricDelta"] { color: #52d483 !important; }
+[data-testid="metric-container"] label { color: #5a4e7a !important; font-size: 0.72rem !important; }
+[data-testid="metric-container"] [data-testid="stMetricValue"] { color: #e2d9f3 !important; font-size: 1.8rem !important; }
+[data-testid="metric-container"] [data-testid="stMetricDelta"] { color: #a855f7 !important; }
 
-/* Headings */
-h1, h2, h3 { color: #e2e5ef !important; }
+/* ── Headings ── */
+h1, h2, h3 { color: #e2d9f3 !important; }
 
-/* Dataframe */
-[data-testid="stDataFrame"] { border: 1px solid #1e2330; border-radius: 8px; }
+/* ── Dataframe ── */
+[data-testid="stDataFrame"] { border: 1px solid #1e1535; border-radius: 8px; }
 
-/* Tabs */
-[data-baseweb="tab-list"] { background: #141720; border-radius: 10px; gap: 4px; padding: 4px; }
-[data-baseweb="tab"] { border-radius: 8px !important; color: #5c6380 !important; }
-[aria-selected="true"] { background: #1e2330 !important; color: #e2e5ef !important; }
+/* ── Tabs ── */
+[data-baseweb="tab-list"] { background: #0f0d1a; border-radius: 10px; gap: 4px; padding: 4px; }
+[data-baseweb="tab"] { border-radius: 8px !important; color: #5a4e7a !important; }
+[aria-selected="true"] { background: #1e1535 !important; color: #e2d9f3 !important; }
 
-/* Expander */
-[data-testid="stExpander"] { border: 1px solid #1e2330; border-radius: 10px; background: #141720; }
+/* ── Expander ── */
+[data-testid="stExpander"] { border: 1px solid #1e1535; border-radius: 10px; background: #0f0d1a; }
 
-/* Divider */
-hr { border-color: #1e2330; }
+/* ── Divider ── */
+hr { border-color: #1e1535; }
 
-/* Info / success / warning boxes */
+/* ── Alert boxes ── */
 [data-testid="stAlert"] { border-radius: 10px; }
 
-/* Buttons */
+/* ── Buttons ── */
 .stButton button {
-    background: #1e2330;
-    color: #e2e5ef;
-    border: 1px solid #252b3b;
+    background: #0f0d1a;
+    color: #e2d9f3;
+    border: 1px solid #2a1f45;
     border-radius: 8px;
-    font-family: 'DM Mono', monospace;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 0.75rem;
+    transition: all .2s ease;
 }
-.stButton button:hover { border-color: #4f9cf9; color: #4f9cf9; }
+.stButton button:hover {
+    border-color: #a855f7;
+    color: #c084fc;
+    box-shadow: 0 0 14px rgba(168,85,247,.25);
+}
 
-/* Code blocks */
-code { background: #141720 !important; color: #4f9cf9 !important; border-radius: 4px; }
+/* ── Code blocks ── */
+code { background: #0f0d1a !important; color: #c084fc !important; border-radius: 4px; }
 
-/* Scrollbar */
+/* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: #0d0f14; }
-::-webkit-scrollbar-thumb { background: #252b3b; border-radius: 2px; }
+::-webkit-scrollbar-track { background: #07050f; }
+::-webkit-scrollbar-thumb { background: linear-gradient(#a855f7,#ec4899); border-radius: 2px; }
 
-/* Chart background match */
-.stPlotlyChart, .stPyplot { background: #141720 !important; border-radius: 12px; }
+/* ── Chart background ── */
+.stPlotlyChart, .stPyplot { background: #0f0d1a !important; border-radius: 12px; }
 
 /* ── Animated page headers ─────────────────────────────────── */
 @keyframes hdrSlideIn {
@@ -117,8 +128,8 @@ code { background: #141720 !important; color: #4f9cf9 !important; border-radius:
     100% { background-position: 200% center; }
 }
 .page-hdr {
-    background: linear-gradient(135deg,#0e1018 0%,#141a28 60%,#0e1018 100%);
-    border: 1px solid #1e2a40;
+    background: linear-gradient(135deg,#09070f 0%,#120d22 60%,#09070f 100%);
+    border: 1px solid #2a1d45;
     border-radius: 16px;
     padding: 1.6rem 2rem 1.4rem;
     margin-bottom: 1.5rem;
@@ -130,7 +141,7 @@ code { background: #141720 !important; color: #4f9cf9 !important; border-radius:
     content:'';
     position:absolute;top:-50%;left:-50%;
     width:200%;height:200%;
-    background:linear-gradient(45deg,transparent 35%,rgba(79,156,249,.04) 50%,transparent 65%);
+    background:linear-gradient(45deg,transparent 35%,rgba(168,85,247,.05) 50%,transparent 65%);
     background-size:200% 200%;
     animation: hdrShimmer 6s linear infinite;
     pointer-events:none;
@@ -148,18 +159,18 @@ code { background: #141720 !important; color: #4f9cf9 !important; border-radius:
 .page-hdr-title {
     font-size:1.65rem;
     font-weight:700;
-    color:#e2e5ef;
+    color:#e2d9f3;
     margin:0 0 .3rem;
     animation: hdrSlideIn .4s .15s both;
 }
 .page-hdr-sub {
     font-size:.8rem;
-    color:#3d4f6e;
+    color:#4a3a6a;
     animation: hdrSlideIn .4s .2s both;
 }
 .page-hdr-line {
     width:0;height:2px;
-    background:linear-gradient(90deg,#4f9cf9,transparent);
+    background:linear-gradient(90deg,#a855f7,transparent);
     border-radius:2px;
     margin:.7rem 0 0;
     animation: hdrLineGrow .6s .3s both;
@@ -170,42 +181,42 @@ code { background: #141720 !important; color: #4f9cf9 !important; border-radius:
     animation: hdrSlideIn .4s .25s both;
 }
 .pill {
-    background:#1a2235;
-    border:1px solid #252f45;
+    background:#140e2a;
+    border:1px solid #2a1f45;
     border-radius:20px;
     padding:.2rem .7rem;
     font-size:.65rem;
-    color:#4a6090;
-    font-family:'DM Mono',monospace;
+    color:#5a4a80;
+    font-family:'JetBrains Mono',monospace;
     letter-spacing:.04em;
 }
 
 /* ── Styled tabs ───────────────────────────────────────────── */
 [data-baseweb="tab-list"] {
-    background: #0e1018 !important;
-    border: 1px solid #1a2235 !important;
+    background: #09070f !important;
+    border: 1px solid #1e1535 !important;
     border-radius: 12px !important;
     padding: 4px !important;
     gap: 3px !important;
 }
 [data-baseweb="tab"] {
     border-radius: 9px !important;
-    color: #3d4f6e !important;
+    color: #3d2e5e !important;
     font-size: .8rem !important;
     padding: .4rem 1.2rem !important;
     transition: all .2s ease !important;
     border: 1px solid transparent !important;
 }
 [data-baseweb="tab"]:hover {
-    background: rgba(79,156,249,.07) !important;
-    color: #7ab8ff !important;
-    border-color: rgba(79,156,249,.15) !important;
+    background: rgba(168,85,247,.08) !important;
+    color: #c084fc !important;
+    border-color: rgba(168,85,247,.2) !important;
 }
 [aria-selected="true"][data-baseweb="tab"] {
-    background: linear-gradient(135deg,#1a2a45,#151f35) !important;
-    color: #e2e5ef !important;
-    border-color: #2a3f65 !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,.4) !important;
+    background: linear-gradient(135deg,#1e1040,#160d35) !important;
+    color: #e2d9f3 !important;
+    border-color: #3a2060 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,.5) !important;
 }
 
 /* ── Chart section headers ─────────────────────────────────── */
@@ -213,15 +224,13 @@ code { background: #141720 !important; color: #4f9cf9 !important; border-radius:
     display:flex;align-items:center;gap:.6rem;
     padding:.6rem .2rem .4rem;
     margin-bottom:.2rem;
-    border-bottom:1px solid #1a2235;
+    border-bottom:1px solid #1e1535;
 }
-.chart-hdr-dot {
-    width:8px;height:8px;border-radius:50%;flex-shrink:0;
-}
+.chart-hdr-dot { width:8px;height:8px;border-radius:50%;flex-shrink:0; }
 .chart-hdr-text {
-    font-size:.75rem;color:#5c7090;text-transform:uppercase;
+    font-size:.75rem;color:#5a4a7a;text-transform:uppercase;
     letter-spacing:.1em;font-weight:600;
-    font-family:'DM Mono',monospace;
+    font-family:'JetBrains Mono',monospace;
 }
 
 /* ── Model leaderboard ─────────────────────────────────────── */
@@ -230,8 +239,8 @@ code { background: #141720 !important; color: #4f9cf9 !important; border-radius:
     to   { opacity:1; transform:translateX(0); }
 }
 .lb-wrap {
-    background:#0a0c14;
-    border:1px solid #1a2235;
+    background:#07050f;
+    border:1px solid #1e1535;
     border-radius:14px;
     overflow:hidden;
     margin-bottom:1.2rem;
@@ -241,64 +250,62 @@ code { background: #141720 !important; color: #4f9cf9 !important; border-radius:
     grid-template-columns:2.5rem 1fr 1fr 1fr 1fr 1fr 1fr;
     gap:.5rem;
     padding:.65rem 1.1rem;
-    background:#0e1018;
-    border-bottom:1px solid #1a2235;
+    background:#09070f;
+    border-bottom:1px solid #1e1535;
 }
 .lb-head-cell {
-    font-size:.6rem;color:#2e3a55;
+    font-size:.6rem;color:#2e2048;
     text-transform:uppercase;letter-spacing:.1em;font-weight:700;
-    font-family:'DM Mono',monospace;
+    font-family:'JetBrains Mono',monospace;
 }
 .lb-row {
     display:grid;
     grid-template-columns:2.5rem 1fr 1fr 1fr 1fr 1fr 1fr;
     gap:.5rem;
     padding:.75rem 1.1rem;
-    border-bottom:1px solid #111520;
+    border-bottom:1px solid #100d1e;
     transition:background .18s ease;
     align-items:center;
 }
-.lb-row:hover { background:#0f1320; }
+.lb-row:hover { background:#0e0c1e; }
 .lb-row:last-child { border-bottom:none; }
 .lb-best {
-    background:linear-gradient(90deg,#0a1a10,#0d1a0e,#090e0c) !important;
-    border-left:3px solid #2a8a3a !important;
+    background:linear-gradient(90deg,#130a2a,#190e35,#0f0820) !important;
+    border-left:3px solid #a855f7 !important;
 }
 .lb-rank { font-size:1rem; text-align:center; }
-.lb-name { font-size:.8rem;font-weight:600;color:#c8d0e8; }
-.lb-best .lb-name { color:#52d483; }
-.lb-val  { font-size:.78rem;color:#4a5878;font-family:'DM Mono',monospace; }
-.lb-val-hi { color:#4f9cf9 !important;font-weight:700; }
-.lb-bar-wrap { height:3px;background:#1a2235;border-radius:2px;margin-top:3px; }
+.lb-name { font-size:.8rem;font-weight:600;color:#c8b8e8; }
+.lb-best .lb-name { color:#c084fc; }
+.lb-val  { font-size:.78rem;color:#3a2e58;font-family:'JetBrains Mono',monospace; }
+.lb-val-hi { color:#a855f7 !important;font-weight:700; }
+.lb-bar-wrap { height:3px;background:#1e1535;border-radius:2px;margin-top:3px; }
 .lb-bar-fill { height:3px;border-radius:2px;transition:width .8s ease; }
 
 /* ── Predict page input sections ───────────────────────────── */
 .input-section {
-    background:#0e1018;
-    border:1px solid #1a2235;
+    background:#09070f;
+    border:1px solid #1e1535;
     border-radius:12px;
     padding:1.1rem 1.3rem .9rem;
     margin-bottom:.8rem;
 }
 .input-section-title {
-    font-size:.68rem;color:#3d5580;
+    font-size:.68rem;color:#3d2e5e;
     text-transform:uppercase;letter-spacing:.1em;
-    font-weight:700;font-family:'DM Mono',monospace;
+    font-weight:700;font-family:'JetBrains Mono',monospace;
     margin-bottom:.8rem;
     display:flex;align-items:center;gap:.5rem;
 }
 
 /* ── Risk result card ──────────────────────────────────────── */
-@keyframes riskPulseRed   { 0%,100%{box-shadow:0 0 20px rgba(224,92,92,.2),0 0 40px rgba(224,92,92,.1);}  50%{box-shadow:0 0 30px rgba(224,92,92,.4),0 0 60px rgba(224,92,92,.2);} }
-@keyframes riskPulseAmber { 0%,100%{box-shadow:0 0 20px rgba(240,168,64,.2),0 0 40px rgba(240,168,64,.1);}  50%{box-shadow:0 0 30px rgba(240,168,64,.4),0 0 60px rgba(240,168,64,.2);} }
-@keyframes riskPulseGreen { 0%,100%{box-shadow:0 0 20px rgba(82,212,131,.2),0 0 40px rgba(82,212,131,.1);}  50%{box-shadow:0 0 30px rgba(82,212,131,.4),0 0 60px rgba(82,212,131,.2);} }
+@keyframes riskPulseRed   { 0%,100%{box-shadow:0 0 20px rgba(236,72,153,.2),0 0 40px rgba(236,72,153,.1);}  50%{box-shadow:0 0 30px rgba(236,72,153,.45),0 0 60px rgba(236,72,153,.2);} }
+@keyframes riskPulseAmber { 0%,100%{box-shadow:0 0 20px rgba(168,85,247,.2),0 0 40px rgba(168,85,247,.1);}  50%{box-shadow:0 0 30px rgba(168,85,247,.45),0 0 60px rgba(168,85,247,.2);} }
+@keyframes riskPulseGreen { 0%,100%{box-shadow:0 0 20px rgba(99,102,241,.2),0 0 40px rgba(99,102,241,.1);}  50%{box-shadow:0 0 30px rgba(99,102,241,.45),0 0 60px rgba(99,102,241,.2);} }
 @keyframes scoreCount {
     from { opacity:0; transform:scale(.5); }
     to   { opacity:1; transform:scale(1); }
 }
-@keyframes barFill {
-    from { width:0; }
-}
+@keyframes barFill { from { width:0; } }
 @keyframes fadeUp {
     from { opacity:0; transform:translateY(12px); }
     to   { opacity:1; transform:translateY(0); }
@@ -315,58 +322,58 @@ code { background: #141720 !important; color: #4f9cf9 !important; border-radius:
     content:'';position:absolute;top:0;left:0;right:0;height:3px;
     border-radius:16px 16px 0 0;
 }
-.risk-card-high  { background:linear-gradient(135deg,#1a0808,#1f0d0d,#160707); border:1px solid #5a1a1a; animation-name:fadeUp,riskPulseRed; animation-duration:.4s,2.5s; animation-delay:0s,0s; animation-iteration-count:1,infinite; }
-.risk-card-high::before  { background:linear-gradient(90deg,#e05c5c,#c03030,#e05c5c); }
-.risk-card-med   { background:linear-gradient(135deg,#1a1008,#1f150d,#160e07); border:1px solid #5a3a1a; animation-name:fadeUp,riskPulseAmber; animation-duration:.4s,2.5s; animation-iteration-count:1,infinite; }
-.risk-card-med::before   { background:linear-gradient(90deg,#f0a840,#c07820,#f0a840); }
-.risk-card-low   { background:linear-gradient(135deg,#081a0a,#0d1f0e,#07160a); border:1px solid #1a5a2a; animation-name:fadeUp,riskPulseGreen; animation-duration:.4s,2.5s; animation-iteration-count:1,infinite; }
-.risk-card-low::before   { background:linear-gradient(90deg,#52d483,#22a450,#52d483); }
+.risk-card-high  { background:linear-gradient(135deg,#1a0515,#200a1a,#150310); border:1px solid #5a1545; animation-name:fadeUp,riskPulseRed; animation-duration:.4s,2.5s; animation-delay:0s,0s; animation-iteration-count:1,infinite; }
+.risk-card-high::before  { background:linear-gradient(90deg,#ec4899,#be185d,#ec4899); }
+.risk-card-med   { background:linear-gradient(135deg,#130a2a,#1a1035,#0e0820); border:1px solid #4a2a80; animation-name:fadeUp,riskPulseAmber; animation-duration:.4s,2.5s; animation-iteration-count:1,infinite; }
+.risk-card-med::before   { background:linear-gradient(90deg,#a855f7,#7c3aed,#a855f7); }
+.risk-card-low   { background:linear-gradient(135deg,#080a1a,#0d0e28,#070818); border:1px solid #1a2060; animation-name:fadeUp,riskPulseGreen; animation-duration:.4s,2.5s; animation-iteration-count:1,infinite; }
+.risk-card-low::before   { background:linear-gradient(90deg,#6366f1,#4338ca,#6366f1); }
 .risk-icon  { font-size:2.8rem;display:block;margin-bottom:.5rem;animation:fadeUp .3s .1s both; }
 .risk-level { font-size:.7rem;text-transform:uppercase;letter-spacing:.18em;font-weight:700;margin-bottom:.3rem;animation:fadeUp .3s .15s both; }
-.risk-score { font-size:3.8rem;font-weight:900;line-height:1;margin-bottom:.2rem;font-family:'DM Mono',monospace;animation:scoreCount .5s .2s cubic-bezier(.34,1.56,.64,1) both; }
-.risk-label { font-size:.82rem;color:#5c6890;margin-bottom:1.1rem;animation:fadeUp .3s .25s both; }
-.risk-bar-bg { height:8px;background:rgba(255,255,255,.06);border-radius:6px;margin:.8rem 0;overflow:hidden; }
+.risk-score { font-size:3.8rem;font-weight:900;line-height:1;margin-bottom:.2rem;font-family:'JetBrains Mono',monospace;animation:scoreCount .5s .2s cubic-bezier(.34,1.56,.64,1) both; }
+.risk-label { font-size:.82rem;color:#5a4a7a;margin-bottom:1.1rem;animation:fadeUp .3s .25s both; }
+.risk-bar-bg { height:8px;background:rgba(255,255,255,.05);border-radius:6px;margin:.8rem 0;overflow:hidden; }
 .risk-bar-fill { height:8px;border-radius:6px;animation:barFill .8s .4s cubic-bezier(.4,0,.2,1) both; }
 .risk-action { font-size:.78rem;padding:.7rem 1rem;border-radius:8px;margin-top:.5rem;animation:fadeUp .3s .35s both;text-align:left; }
-.risk-action-high  { background:#2a0a0a;border:1px solid #4a1515;color:#e08080; }
-.risk-action-med   { background:#2a1a0a;border:1px solid #4a3010;color:#e0b070; }
-.risk-action-low   { background:#0a2010;border:1px solid #155a20;color:#70e090; }
+.risk-action-high  { background:#200510;border:1px solid #5a1040;color:#f472b6; }
+.risk-action-med   { background:#130828;border:1px solid #3a1560;color:#c084fc; }
+.risk-action-low   { background:#07081a;border:1px solid #1a2060;color:#818cf8; }
 .factor-row {
     display:flex;align-items:center;gap:.6rem;
     padding:.45rem .6rem;border-radius:8px;
     margin-bottom:.35rem;
-    background:#0a0c14;border:1px solid #141825;
+    background:#09070f;border:1px solid #14101e;
     animation:fadeUp .3s both;
     transition:background .15s;
 }
-.factor-row:hover { background:#0e1020; }
+.factor-row:hover { background:#0e0c1e; }
 .factor-badge {
     font-size:.62rem;font-weight:700;
     padding:.15rem .45rem;border-radius:10px;
-    font-family:'DM Mono',monospace;
+    font-family:'JetBrains Mono',monospace;
     white-space:nowrap;flex-shrink:0;
 }
-.fb-red   { background:#2a0808;color:#e05c5c;border:1px solid #4a1515; }
-.fb-amber { background:#2a1808;color:#f0a840;border:1px solid #4a3010; }
-.fb-green { background:#082a12;color:#52d483;border:1px solid #105a22; }
-.fb-grey  { background:#141820;color:#5c6890;border:1px solid #1e2535; }
-.factor-text { font-size:.74rem;color:#8090b0;flex:1; }
-.factor-score { font-size:.75rem;font-weight:700;font-family:'DM Mono',monospace;flex-shrink:0; }
+.fb-red   { background:#200510;color:#ec4899;border:1px solid #5a1040; }
+.fb-amber { background:#130828;color:#a855f7;border:1px solid #3a1560; }
+.fb-green { background:#07081a;color:#6366f1;border:1px solid #1a1f60; }
+.fb-grey  { background:#100e1a;color:#5a4a7a;border:1px solid #1e1a35; }
+.factor-text { font-size:.74rem;color:#7a6a9a;flex:1; }
+.factor-score { font-size:.75rem;font-weight:700;font-family:'JetBrains Mono',monospace;flex-shrink:0; }
 </style>
 """, unsafe_allow_html=True)
 
 # ── Colour palette for matplotlib ────────────────────────────────
-PALETTE = {"Yes": "#e05c5c", "No": "#4f9cf9"}
-PRIMARY, ACCENT, BG = "#e2e5ef", "#e05c5c", "#141720"
+PALETTE = {"Yes": "#ec4899", "No": "#a855f7"}
+PRIMARY, ACCENT, BG = "#e2d9f3", "#ec4899", "#0f0d1a"
 plt.rcParams.update({
     "figure.facecolor": BG, "axes.facecolor": BG,
     "axes.spines.top": False, "axes.spines.right": False,
     "axes.spines.left": False, "axes.spines.bottom": False,
     "text.color": PRIMARY, "axes.labelcolor": PRIMARY,
-    "xtick.color": "#5c6380", "ytick.color": "#5c6380",
+    "xtick.color": "#5a4e7a", "ytick.color": "#5a4e7a",
     "axes.titlesize": 12, "axes.labelsize": 10,
     "axes.titlecolor": PRIMARY,
-    "grid.color": "#1e2330", "grid.alpha": 0.5,
+    "grid.color": "#1e1535", "grid.alpha": 0.5,
 })
 
 # ════════════════════════════════════════════════════════════════
@@ -584,7 +591,7 @@ TN, FP, FN, TP = cm.ravel()
 
 
 # ════════════════════════════════════════════════════════════════
-# SIDEBAR — ANIMATED
+# SIDEBAR — COSMIC PURPLE EYE
 # ════════════════════════════════════════════════════════════════
 with st.sidebar:
 
@@ -594,9 +601,9 @@ with st.sidebar:
         from { opacity:0; transform:translateX(-20px); }
         to   { opacity:1; transform:translateX(0); }
     }
-    @keyframes pulseGlow {
-        0%,100% { box-shadow:0 0 8px #1a3a7a,0 0 20px #0d2050; }
-        50%     { box-shadow:0 0 20px #2a5abf,0 0 45px #1a3a9a; }
+    @keyframes eyePulse {
+        0%,100% { box-shadow:0 0 10px rgba(168,85,247,.3),0 0 25px rgba(168,85,247,.15); }
+        50%     { box-shadow:0 0 25px rgba(168,85,247,.6),0 0 55px rgba(236,72,153,.2); }
     }
     @keyframes shimmer {
         0%   { background-position:-200% center; }
@@ -607,24 +614,28 @@ with st.sidebar:
         to   { opacity:1; transform:scale(1)   translateY(0); }
     }
     @keyframes badgePulse {
-        0%,100% { box-shadow:0 0 6px #1a5a2a; }
-        50%     { box-shadow:0 0 20px #2a8a3a,0 0 35px #1a6a2a; }
+        0%,100% { box-shadow:0 0 6px rgba(168,85,247,.3); }
+        50%     { box-shadow:0 0 20px rgba(168,85,247,.6),0 0 35px rgba(99,102,241,.2); }
     }
     @keyframes dotBlink {
         0%,100% { opacity:1; }
         50%     { opacity:.15; }
     }
     @keyframes logoIn {
-        0%   { opacity:0; letter-spacing:.5em; filter:blur(6px); }
-        100% { opacity:1; letter-spacing:.15em; filter:blur(0); }
+        0%   { opacity:0; filter:blur(8px) brightness(.4); }
+        100% { opacity:1; filter:blur(0) brightness(1); }
     }
     @keyframes lineExpand {
         from { width:0; opacity:0; }
         to   { width:70%; opacity:1; }
     }
-    @keyframes borderFlow {
-        0%,100% { border-color:rgba(79,156,249,.25); }
-        50%     { border-color:rgba(79,156,249,.55); }
+    @keyframes irisRotate {
+        from { transform: rotate(0deg); }
+        to   { transform: rotate(360deg); }
+    }
+    @keyframes pupilBlink {
+        0%,90%,100% { transform: scaleY(1); }
+        95%         { transform: scaleY(.08); }
     }
     @keyframes navItemIn {
         from { opacity:0; transform:translateX(-16px); }
@@ -632,74 +643,82 @@ with st.sidebar:
     }
 
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg,#07080e 0%,#0b0d18 70%,#090b14 100%) !important;
-        border-right: 1px solid #161b2c !important;
+        background: linear-gradient(180deg,#05030e 0%,#0a0718 70%,#06040f 100%) !important;
+        border-right: 1px solid #1e1535 !important;
     }
 
-    .ibm-box {
-        background: linear-gradient(135deg,#0a1428 0%,#0e2556 50%,#091220 100%);
-        border: 1px solid #1a3575;
+    .eye-box {
+        background: linear-gradient(135deg,#0d0720 0%,#180d35 50%,#0a0518 100%);
+        border: 1px solid #3a1570;
         border-radius: 16px;
         padding: 1.5rem 1rem 1.2rem;
         margin-bottom: 1rem;
         text-align: center;
-        animation: pulseGlow 3.5s ease-in-out infinite;
+        animation: eyePulse 3.5s ease-in-out infinite;
         position: relative;
         overflow: hidden;
     }
-    .ibm-box::before {
+    .eye-box::before {
         content:'';
         position:absolute;top:-50%;left:-50%;
         width:200%;height:200%;
-        background:linear-gradient(45deg,transparent 30%,rgba(79,156,249,.08) 50%,transparent 70%);
+        background:linear-gradient(45deg,transparent 30%,rgba(168,85,247,.07) 50%,transparent 70%);
         background-size:200% 200%;
-        animation:shimmer 4s linear infinite;
+        animation:shimmer 5s linear infinite;
         pointer-events:none;
     }
-    .ibm-text {
-        font-size:2.6rem;
-        font-weight:900;
-        font-family:'DM Mono',monospace;
+
+    /* SVG Eye */
+    .eye-svg-wrap {
+        display:flex;justify-content:center;margin-bottom:.5rem;
+        animation: logoIn 1s .2s both;
+    }
+
+    .eye-title {
+        font-size:1rem;
+        font-weight:800;
+        font-family:'Outfit',sans-serif;
         display:block;
-        margin-bottom:.2rem;
-        background:linear-gradient(90deg,#3a8af9,#7fc0ff,#4f9cf9,#7fc0ff,#3a8af9);
+        margin-bottom:.15rem;
+        background:linear-gradient(90deg,#a855f7,#ec4899,#6366f1,#a855f7);
         background-size:300% auto;
         -webkit-background-clip:text;
         -webkit-text-fill-color:transparent;
         background-clip:text;
-        animation:logoIn 1.2s cubic-bezier(.16,1,.3,1) forwards,
-                  shimmer 4s 1.2s linear infinite;
+        animation:logoIn .9s both, shimmer 4s 1s linear infinite;
+        letter-spacing:.08em;
+        text-transform:uppercase;
     }
-    .ibm-line {
+    .eye-line {
         width:0;
         height:1px;
-        background:linear-gradient(90deg,transparent,#2a5abf,transparent);
-        margin:.5rem auto .5rem;
-        animation:lineExpand 1s .9s both;
+        background:linear-gradient(90deg,transparent,#7c3aed,transparent);
+        margin:.45rem auto .45rem;
+        animation:lineExpand 1s .8s both;
     }
-    .ibm-dept {
-        font-size:.63rem;
-        color:#4a6aa0;
+    .eye-dept {
+        font-size:.6rem;
+        color:#5a3a9a;
         text-transform:uppercase;
         letter-spacing:.14em;
         animation:fadeSlideIn .7s .4s both;
     }
-    .ibm-tag {
-        font-size:.7rem;
-        color:#6a8cbf;
-        margin-top:.35rem;
+    .eye-tag {
+        font-size:.68rem;
+        color:#7a5ab0;
+        margin-top:.3rem;
         font-style:italic;
         animation:fadeSlideIn .7s .6s both;
     }
 
     .nav-lbl {
         font-size:.57rem;
-        color:#252f48;
+        color:#2a1e48;
         text-transform:uppercase;
         letter-spacing:.14em;
         font-weight:700;
         padding:.5rem .2rem .3rem;
-        font-family:'DM Mono',monospace;
+        font-family:'JetBrains Mono',monospace;
     }
 
     [data-testid="stSidebar"] .stRadio > div { gap:1px !important; }
@@ -718,24 +737,19 @@ with st.sidebar:
         position:absolute;
         left:0;top:20%;bottom:20%;
         width:2.5px;
-        background:linear-gradient(180deg,transparent,#4f9cf9,transparent);
+        background:linear-gradient(180deg,transparent,#a855f7,transparent);
         border-radius:2px;
         transform:scaleY(0);
         transition:transform .2s ease;
     }
     [data-testid="stSidebar"] .stRadio label:hover {
-        background:rgba(79,156,249,.08) !important;
-        border-color:rgba(79,156,249,.22) !important;
+        background:rgba(168,85,247,.08) !important;
+        border-color:rgba(168,85,247,.25) !important;
         transform:translateX(5px) !important;
     }
-    [data-testid="stSidebar"] .stRadio label:hover::after {
-        transform:scaleY(1);
-    }
-    [data-testid="stSidebar"] .stRadio label:hover p {
-        color:#7ab8ff !important;
-    }
+    [data-testid="stSidebar"] .stRadio label:hover::after { transform:scaleY(1); }
+    [data-testid="stSidebar"] .stRadio label:hover p { color:#c084fc !important; }
 
-    /* stagger nav items sliding in */
     [data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label:nth-child(1){animation:navItemIn .4s .10s both}
     [data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label:nth-child(2){animation:navItemIn .4s .18s both}
     [data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label:nth-child(3){animation:navItemIn .4s .26s both}
@@ -745,38 +759,21 @@ with st.sidebar:
     [data-testid="stSidebar"] .stRadio div[role="radiogroup"] > label:nth-child(7){animation:navItemIn .4s .58s both}
 
     .stat-grid {
-        display:grid;
-        grid-template-columns:1fr 1fr;
-        gap:.38rem;
-        margin:.45rem 0;
+        display:grid;grid-template-columns:1fr 1fr;gap:.38rem;margin:.45rem 0;
     }
     .s-cell {
-        background:#09101e;
-        border:1px solid #161e30;
-        border-radius:9px;
-        padding:.55rem .4rem;
-        text-align:center;
-        transition:all .2s ease;
+        background:#09070f;border:1px solid #1e1535;border-radius:9px;
+        padding:.55rem .4rem;text-align:center;transition:all .2s ease;
     }
     .s-cell:hover {
-        background:#0e1628;
-        border-color:#253560;
-        transform:translateY(-2px);
-        box-shadow:0 4px 14px rgba(0,0,0,.5);
+        background:#130d28;border-color:#3a1a60;
+        transform:translateY(-2px);box-shadow:0 4px 14px rgba(168,85,247,.2);
     }
     .s-val {
-        font-size:.95rem;
-        font-weight:700;
-        color:#4f9cf9;
-        font-family:'DM Mono',monospace;
-        display:block;
+        font-size:.95rem;font-weight:700;color:#a855f7;
+        font-family:'JetBrains Mono',monospace;display:block;
     }
-    .s-lbl {
-        font-size:.53rem;
-        color:#2e3a55;
-        text-transform:uppercase;
-        letter-spacing:.07em;
-    }
+    .s-lbl { font-size:.53rem;color:#2e1e4a;text-transform:uppercase;letter-spacing:.07em; }
     .s-cell:nth-child(1){animation:statCardIn .5s .70s both}
     .s-cell:nth-child(2){animation:statCardIn .5s .80s both}
     .s-cell:nth-child(3){animation:statCardIn .5s .90s both}
@@ -785,71 +782,80 @@ with st.sidebar:
     .s-cell:nth-child(6){animation:statCardIn .5s 1.2s both}
 
     .best-badge {
-        background:linear-gradient(135deg,#081510,#0c2218,#081510);
-        border:1px solid #1a4f22;
-        border-radius:11px;
-        padding:.8rem .95rem;
-        margin:.5rem 0;
-        position:relative;
-        overflow:hidden;
-        animation:badgePulse 2.5s ease-in-out infinite,
-                  fadeSlideIn .6s 1.3s both;
+        background:linear-gradient(135deg,#0e0820,#160d35,#0a0618);
+        border:1px solid #3a1570;border-radius:11px;
+        padding:.8rem .95rem;margin:.5rem 0;
+        position:relative;overflow:hidden;
+        animation:badgePulse 2.5s ease-in-out infinite,fadeSlideIn .6s 1.3s both;
     }
     .best-badge::before {
-        content:'';
-        position:absolute;top:-50%;left:-50%;
+        content:'';position:absolute;top:-50%;left:-50%;
         width:200%;height:200%;
-        background:linear-gradient(45deg,transparent 35%,rgba(82,212,131,.05) 50%,transparent 65%);
-        background-size:200% 200%;
-        animation:shimmer 3s linear infinite;
+        background:linear-gradient(45deg,transparent 35%,rgba(168,85,247,.06) 50%,transparent 65%);
+        background-size:200% 200%;animation:shimmer 3s linear infinite;
     }
     .bb-label {
-        font-size:.57rem;
-        color:#3a9e52;
-        text-transform:uppercase;
-        letter-spacing:.1em;
-        margin-bottom:.25rem;
-        display:flex;
-        align-items:center;
-        gap:.4rem;
+        font-size:.57rem;color:#7c3aed;text-transform:uppercase;
+        letter-spacing:.1em;margin-bottom:.25rem;
+        display:flex;align-items:center;gap:.4rem;
     }
     .live-dot {
-        width:6px;height:6px;
-        background:#52d483;
-        border-radius:50%;
-        display:inline-block;
-        animation:dotBlink 1.3s ease-in-out infinite;
-        box-shadow:0 0 6px #52d483;
+        width:6px;height:6px;background:#a855f7;border-radius:50%;
+        display:inline-block;animation:dotBlink 1.3s ease-in-out infinite;
+        box-shadow:0 0 6px #a855f7;
     }
-    .bb-name {
-        font-size:.88rem;
-        font-weight:700;
-        color:#e2e5ef;
-        font-family:'DM Mono',monospace;
-    }
-    .bb-metrics {
-        font-size:.67rem;
-        color:#52d483;
-        margin-top:.28rem;
-        opacity:.8;
-    }
+    .bb-name { font-size:.88rem;font-weight:700;color:#e2d9f3;font-family:'JetBrains Mono',monospace; }
+    .bb-metrics { font-size:.67rem;color:#a855f7;margin-top:.28rem;opacity:.8; }
 
     .sb-footer {
-        font-size:.55rem;
-        color:#1e2535;
-        text-align:center;
-        margin-top:.7rem;
-        font-family:'DM Mono',monospace;
-        letter-spacing:.05em;
-        animation:fadeSlideIn .5s 1.6s both;
+        font-size:.55rem;color:#1e1535;text-align:center;
+        margin-top:.7rem;font-family:'JetBrains Mono',monospace;
+        letter-spacing:.05em;animation:fadeSlideIn .5s 1.6s both;
     }
     </style>
 
-    <div class="ibm-box">
-        <span class="ibm-text">IBM</span>
-        <div class="ibm-line"></div>
-        <div class="ibm-dept">Human Resources</div>
-        <div class="ibm-tag">&#10022; Attrition Prediction System &#10022;</div>
+    <div class="eye-box">
+      <div class="eye-svg-wrap">
+        <svg width="80" height="50" viewBox="0 0 80 50" xmlns="http://www.w3.org/2000/svg">
+          <!-- Outer glow ring -->
+          <ellipse cx="40" cy="25" rx="38" ry="22" fill="none" stroke="url(#eyeGrad)" stroke-width="1.5" opacity="0.5"/>
+          <!-- Eye white -->
+          <path d="M2,25 Q40,2 78,25 Q40,48 2,25 Z" fill="#0d0820"/>
+          <!-- Iris ring (rotating) -->
+          <g style="transform-origin:40px 25px;animation:irisRotate 8s linear infinite">
+            <circle cx="40" cy="25" r="13" fill="none" stroke="#7c3aed" stroke-width="1" stroke-dasharray="3 2" opacity="0.6"/>
+          </g>
+          <!-- Iris -->
+          <circle cx="40" cy="25" r="11" fill="url(#irisGrad)"/>
+          <!-- Pupil (blinking) -->
+          <g style="transform-origin:40px 25px;animation:pupilBlink 4s ease-in-out infinite">
+            <circle cx="40" cy="25" r="5.5" fill="#07050f"/>
+          </g>
+          <!-- Pupil glint -->
+          <circle cx="37.5" cy="22.5" r="1.8" fill="rgba(255,255,255,0.55)"/>
+          <!-- Circuit lines -->
+          <line x1="2" y1="25" x2="16" y2="25" stroke="#5a1590" stroke-width="0.8" opacity="0.5"/>
+          <line x1="64" y1="25" x2="78" y2="25" stroke="#5a1590" stroke-width="0.8" opacity="0.5"/>
+          <line x1="14" y1="18" x2="8" y2="14" stroke="#3a0f60" stroke-width="0.6" opacity="0.4"/>
+          <line x1="66" y1="18" x2="72" y2="14" stroke="#3a0f60" stroke-width="0.6" opacity="0.4"/>
+          <defs>
+            <linearGradient id="eyeGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#a855f7"/>
+              <stop offset="50%" stop-color="#ec4899"/>
+              <stop offset="100%" stop-color="#6366f1"/>
+            </linearGradient>
+            <radialGradient id="irisGrad" cx="40%" cy="35%">
+              <stop offset="0%" stop-color="#7c3aed"/>
+              <stop offset="60%" stop-color="#5b21b6"/>
+              <stop offset="100%" stop-color="#2e1065"/>
+            </radialGradient>
+          </defs>
+        </svg>
+      </div>
+      <span class="eye-title">Attrition Surveillance</span>
+      <div class="eye-line"></div>
+      <div class="eye-dept">Human Resources · IBM</div>
+      <div class="eye-tag">&#10022; Cosmic Purple Intelligence System &#10022;</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -906,7 +912,7 @@ if page == "🏠 Overview & KPIs":
 
     st.markdown(f"""
     <div class="page-hdr">
-      <div class="page-hdr-accent" style="background:linear-gradient(90deg,#4f9cf9,#9b72f5,#e05c5c)"></div>
+      <div class="page-hdr-accent" style="background:linear-gradient(90deg,#a855f7,#ec4899,#6366f1)"></div>
       <span class="page-hdr-icon">📊</span>
       <div class="page-hdr-title">IBM HR Attrition Prediction</div>
       <div class="page-hdr-sub">Machine Learning Pipeline &nbsp;·&nbsp; Employee Retention Intelligence System</div>
@@ -928,12 +934,12 @@ if page == "🏠 Overview & KPIs":
     kpi_html = f"""
     <style>
     .kgrid {{display:grid;grid-template-columns:repeat(5,1fr);gap:.9rem;margin-bottom:1.2rem}}
-    .kcard {{background:#141720;border:1px solid #1e2330;border-radius:14px;padding:1.3rem 1.1rem 1rem;position:relative;overflow:hidden}}
+    .kcard {{background:#0f0d1a;border:1px solid #1e1535;border-radius:14px;padding:1.3rem 1.1rem 1rem;position:relative;overflow:hidden}}
     .kcard:hover {{border-color:#2e3650}}
     .kbar {{position:absolute;top:0;left:0;right:0;height:3px;border-radius:14px 14px 0 0}}
     .klabel {{font-size:.67rem;color:#5c6380;text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:.45rem}}
     .kvalue {{font-size:2.1rem;font-weight:700;line-height:1;margin-bottom:.35rem}}
-    .ksub {{font-size:.71rem;color:#4f9cf9;font-weight:500}}
+    .ksub {{font-size:.71rem;color:#a855f7;font-weight:500}}
     .kdesc {{font-size:.65rem;color:#5c6380;margin-top:.25rem}}
     .kicon {{position:absolute;top:1rem;right:1rem;font-size:1.3rem;opacity:.18}}
     </style>
@@ -941,46 +947,46 @@ if page == "🏠 Overview & KPIs":
     <div class="kgrid">
 
       <div class="kcard">
-        <div class="kbar" style="background:#e05c5c"></div>
+        <div class="kbar" style="background:#ec4899"></div>
         <div class="kicon">📉</div>
         <div class="klabel">Attrition Rate</div>
-        <div class="kvalue" style="color:#e05c5c">{attr_rate:.1f}%</div>
+        <div class="kvalue" style="color:#ec4899">{attr_rate:.1f}%</div>
         <div class="ksub">▲ {yes_count} of {len(df):,} employees left</div>
         <div class="kdesc">Industry avg: 18–20%</div>
       </div>
 
       <div class="kcard">
-        <div class="kbar" style="background:#4f9cf9"></div>
+        <div class="kbar" style="background:#a855f7"></div>
         <div class="kicon">🎯</div>
         <div class="klabel">Best ROC-AUC</div>
-        <div class="kvalue" style="color:#4f9cf9">{best["roc_auc"]:.3f}</div>
+        <div class="kvalue" style="color:#a855f7">{best["roc_auc"]:.3f}</div>
         <div class="ksub">▲ {best_name}</div>
         <div class="kdesc">0.5=random · 0.7+=good</div>
       </div>
 
       <div class="kcard">
-        <div class="kbar" style="background:#52d483"></div>
+        <div class="kbar" style="background:#8b5cf6"></div>
         <div class="kicon">🎣</div>
         <div class="klabel">Recall · Leavers Caught</div>
-        <div class="kvalue" style="color:#52d483">{best["rec_yes"]:.1%}</div>
+        <div class="kvalue" style="color:#8b5cf6">{best["rec_yes"]:.1%}</div>
         <div class="ksub">▲ {TP} of {TP+FN} leavers found</div>
         <div class="kdesc">Missed: {FN} employees</div>
       </div>
 
       <div class="kcard">
-        <div class="kbar" style="background:#f0a840"></div>
+        <div class="kbar" style="background:#6366f1"></div>
         <div class="kicon">⚖️</div>
         <div class="klabel">F1 Score (Weighted)</div>
-        <div class="kvalue" style="color:#f0a840">{best["f1_yes"]:.3f}</div>
+        <div class="kvalue" style="color:#6366f1">{best["f1_yes"]:.3f}</div>
         <div class="ksub">Precision: {best["prec_yes"]:.3f}</div>
         <div class="kdesc">Weighted avg across classes</div>
       </div>
 
       <div class="kcard">
-        <div class="kbar" style="background:#9b72f5"></div>
+        <div class="kbar" style="background:#c084fc"></div>
         <div class="kicon">🚀</div>
         <div class="klabel">Lift over Random</div>
-        <div class="kvalue" style="color:#9b72f5">{lift_val:.2f}×</div>
+        <div class="kvalue" style="color:#c084fc">{lift_val:.2f}×</div>
         <div class="ksub">Avg Precision: {best["avg_prec"]:.3f}</div>
         <div class="kdesc">{lift_val:.1f}× better than random</div>
       </div>
@@ -992,24 +998,24 @@ if page == "🏠 Overview & KPIs":
     # Secondary stats row
     sec_html = f"""
     <div style='display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin-bottom:1.4rem'>
-      <div style='background:#141720;border:1px solid #1e2330;border-radius:10px;padding:.9rem;text-align:center'>
+      <div style='background:#0f0d1a;border:1px solid #1e1535;border-radius:10px;padding:.9rem;text-align:center'>
         <div style='font-size:.63rem;color:#5c6380;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.3rem'>Income Gap</div>
-        <div style='font-size:1.45rem;font-weight:700;color:#e05c5c'>${income_gap:,.0f}/mo</div>
+        <div style='font-size:1.45rem;font-weight:700;color:#ec4899'>${income_gap:,.0f}/mo</div>
         <div style='font-size:.63rem;color:#5c6380'>Leavers earn less on average</div>
       </div>
-      <div style='background:#141720;border:1px solid #1e2330;border-radius:10px;padding:.9rem;text-align:center'>
+      <div style='background:#0f0d1a;border:1px solid #1e1535;border-radius:10px;padding:.9rem;text-align:center'>
         <div style='font-size:.63rem;color:#5c6380;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.3rem'>Overtime Effect</div>
-        <div style='font-size:1.45rem;font-weight:700;color:#f0a840'>{ot_rate_y:.0f}% vs {ot_rate_n:.0f}%</div>
+        <div style='font-size:1.45rem;font-weight:700;color:#6366f1'>{ot_rate_y:.0f}% vs {ot_rate_n:.0f}%</div>
         <div style='font-size:.63rem;color:#5c6380'>Leavers vs stayers working OT</div>
       </div>
-      <div style='background:#141720;border:1px solid #1e2330;border-radius:10px;padding:.9rem;text-align:center'>
+      <div style='background:#0f0d1a;border:1px solid #1e1535;border-radius:10px;padding:.9rem;text-align:center'>
         <div style='font-size:.63rem;color:#5c6380;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.3rem'>CV-AUC (5-Fold)</div>
-        <div style='font-size:1.45rem;font-weight:700;color:#4f9cf9'>{best["cv_roc"].mean():.3f}</div>
+        <div style='font-size:1.45rem;font-weight:700;color:#a855f7'>{best["cv_roc"].mean():.3f}</div>
         <div style='font-size:.63rem;color:#5c6380'>Std: ±{best["cv_roc"].std():.3f} (stable)</div>
       </div>
-      <div style='background:#141720;border:1px solid #1e2330;border-radius:10px;padding:.9rem;text-align:center'>
+      <div style='background:#0f0d1a;border:1px solid #1e1535;border-radius:10px;padding:.9rem;text-align:center'>
         <div style='font-size:.63rem;color:#5c6380;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.3rem'>Test Accuracy</div>
-        <div style='font-size:1.45rem;font-weight:700;color:#52d483'>63.6%</div>
+        <div style='font-size:1.45rem;font-weight:700;color:#8b5cf6'>63.6%</div>
         <div style='font-size:.63rem;color:#5c6380'>Raw (use AUC/F1 for imbalanced)</div>
       </div>
     </div>
@@ -1022,32 +1028,32 @@ if page == "🏠 Overview & KPIs":
 
     with col1:
         cm_html = f"""
-        <div style='background:#141720;border:1px solid #1e2330;border-radius:14px;padding:1.3rem'>
+        <div style='background:#0f0d1a;border:1px solid #1e1535;border-radius:14px;padding:1.3rem'>
           <div style='font-size:.72rem;color:#5c6380;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.9rem;font-weight:600'>
             📋 Confusion Matrix — {total_cm} Test Employees
           </div>
           <div style='display:grid;grid-template-columns:1fr 1fr;gap:.65rem'>
-            <div style='background:#0a1a0f;border:1px solid #1a4a24;border-radius:10px;padding:.9rem'>
-              <div style='font-size:.63rem;color:#52d483;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.25rem'>✅ True Negatives</div>
-              <div style='font-size:2rem;font-weight:700;color:#52d483'>{TN}</div>
+            <div style='background:#100a1e;border:1px solid #2a1550;border-radius:10px;padding:.9rem'>
+              <div style='font-size:.63rem;color:#a855f7;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.25rem'>✅ True Negatives</div>
+              <div style='font-size:2rem;font-weight:700;color:#a855f7'>{TN}</div>
               <div style='font-size:.68rem;color:#3a7a4a'>{TN/total_cm:.1%} of test set</div>
               <div style='font-size:.63rem;color:#5c6380;margin-top:.25rem'>Correctly said STAYED</div>
             </div>
-            <div style='background:#0a1a0f;border:1px solid #1a4a24;border-radius:10px;padding:.9rem'>
-              <div style='font-size:.63rem;color:#52d483;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.25rem'>✅ True Positives</div>
-              <div style='font-size:2rem;font-weight:700;color:#52d483'>{TP}</div>
+            <div style='background:#100a1e;border:1px solid #2a1550;border-radius:10px;padding:.9rem'>
+              <div style='font-size:.63rem;color:#a855f7;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.25rem'>✅ True Positives</div>
+              <div style='font-size:2rem;font-weight:700;color:#a855f7'>{TP}</div>
               <div style='font-size:.68rem;color:#3a7a4a'>{TP/total_cm:.1%} of test set</div>
               <div style='font-size:.63rem;color:#5c6380;margin-top:.25rem'>Correctly said LEFT</div>
             </div>
             <div style='background:#1a120a;border:1px solid #4a3a1a;border-radius:10px;padding:.9rem'>
-              <div style='font-size:.63rem;color:#f0a840;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.25rem'>⚠️ False Positives</div>
-              <div style='font-size:2rem;font-weight:700;color:#f0a840'>{FP}</div>
+              <div style='font-size:.63rem;color:#6366f1;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.25rem'>⚠️ False Positives</div>
+              <div style='font-size:2rem;font-weight:700;color:#6366f1'>{FP}</div>
               <div style='font-size:.68rem;color:#7a5a2a'>{FP/total_cm:.1%} of test set</div>
               <div style='font-size:.63rem;color:#5c6380;margin-top:.25rem'>Said left — stayed</div>
             </div>
             <div style='background:#1a0a0a;border:1px solid #4a1a1a;border-radius:10px;padding:.9rem'>
-              <div style='font-size:.63rem;color:#e05c5c;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.25rem'>❌ False Negatives</div>
-              <div style='font-size:2rem;font-weight:700;color:#e05c5c'>{FN}</div>
+              <div style='font-size:.63rem;color:#ec4899;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.25rem'>❌ False Negatives</div>
+              <div style='font-size:2rem;font-weight:700;color:#ec4899'>{FN}</div>
               <div style='font-size:.68rem;color:#7a2a2a'>{FN/total_cm:.1%} of test set</div>
               <div style='font-size:.63rem;color:#5c6380;margin-top:.25rem'>Said stayed — left ← worst</div>
             </div>
@@ -1058,29 +1064,29 @@ if page == "🏠 Overview & KPIs":
 
     with col2:
         ins_html = f"""
-        <div style='background:#141720;border:1px solid #1e2330;border-radius:14px;padding:1.3rem'>
+        <div style='background:#0f0d1a;border:1px solid #1e1535;border-radius:14px;padding:1.3rem'>
           <div style='font-size:.72rem;color:#5c6380;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.9rem;font-weight:600'>
             🔑 Key EDA Insights
           </div>
           <div style='display:flex;flex-direction:column;gap:.6rem'>
-            <div style='background:#0d1220;border-left:3px solid #4f9cf9;border-radius:0 8px 8px 0;padding:.7rem 1rem'>
-              <div style='font-size:.72rem;color:#4f9cf9;font-weight:600;margin-bottom:.15rem'>⏱️ Overtime Effect</div>
+            <div style='background:#0d1220;border-left:3px solid #a855f7;border-radius:0 8px 8px 0;padding:.7rem 1rem'>
+              <div style='font-size:.72rem;color:#a855f7;font-weight:600;margin-bottom:.15rem'>⏱️ Overtime Effect</div>
               <div style='font-size:.74rem;color:#e2e5ef'>Leavers on OT: <b>{ot_rate_y:.0f}%</b> vs <b>{ot_rate_n:.0f}%</b> stayers — <b>{ot_rate_y/ot_rate_n:.1f}× higher risk</b></div>
             </div>
-            <div style='background:#0d1220;border-left:3px solid #e05c5c;border-radius:0 8px 8px 0;padding:.7rem 1rem'>
-              <div style='font-size:.72rem;color:#e05c5c;font-weight:600;margin-bottom:.15rem'>💰 Income Gap</div>
+            <div style='background:#0d1220;border-left:3px solid #ec4899;border-radius:0 8px 8px 0;padding:.7rem 1rem'>
+              <div style='font-size:.72rem;color:#ec4899;font-weight:600;margin-bottom:.15rem'>💰 Income Gap</div>
               <div style='font-size:.74rem;color:#e2e5ef'>Leavers earn <b>${avg_inc_y:,.0f}</b>/mo vs <b>${avg_inc_n:,.0f}</b>/mo — <b>${income_gap:,.0f} gap</b></div>
             </div>
-            <div style='background:#0d1220;border-left:3px solid #f0a840;border-radius:0 8px 8px 0;padding:.7rem 1rem'>
-              <div style='font-size:.72rem;color:#f0a840;font-weight:600;margin-bottom:.15rem'>🚗 Commute Risk</div>
+            <div style='background:#0d1220;border-left:3px solid #6366f1;border-radius:0 8px 8px 0;padding:.7rem 1rem'>
+              <div style='font-size:.72rem;color:#6366f1;font-weight:600;margin-bottom:.15rem'>🚗 Commute Risk</div>
               <div style='font-size:.74rem;color:#e2e5ef'>Employees &gt;20km away show <b>significantly higher</b> attrition — remote work is key</div>
             </div>
-            <div style='background:#0d1220;border-left:3px solid #f0a840;border-radius:0 8px 8px 0;padding:.7rem 1rem'>
-              <div style='font-size:.72rem;color:#f0a840;font-weight:600;margin-bottom:.15rem'>📅 Early Tenure Zone</div>
+            <div style='background:#0d1220;border-left:3px solid #6366f1;border-radius:0 8px 8px 0;padding:.7rem 1rem'>
+              <div style='font-size:.72rem;color:#6366f1;font-weight:600;margin-bottom:.15rem'>📅 Early Tenure Zone</div>
               <div style='font-size:.74rem;color:#e2e5ef'><b>0–2 year</b> employees churn most — critical onboarding &amp; mentoring window</div>
             </div>
-            <div style='background:#0d1220;border-left:3px solid #52d483;border-radius:0 8px 8px 0;padding:.7rem 1rem'>
-              <div style='font-size:.72rem;color:#52d483;font-weight:600;margin-bottom:.15rem'>💎 Stock Options Retain</div>
+            <div style='background:#0d1220;border-left:3px solid #8b5cf6;border-radius:0 8px 8px 0;padding:.7rem 1rem'>
+              <div style='font-size:.72rem;color:#8b5cf6;font-weight:600;margin-bottom:.15rem'>💎 Stock Options Retain</div>
               <div style='font-size:.74rem;color:#e2e5ef'>Level-0 (no options) leave far more — <b>even Level-1 grants dramatically reduce risk</b></div>
             </div>
           </div>
@@ -1097,22 +1103,22 @@ if page == "🏠 Overview & KPIs":
         vc = df["Attrition"].value_counts()
         stats_html = f"""
         <div style='display:flex;flex-direction:column;gap:.55rem'>
-          <div style='background:#141720;border:1px solid #1e2330;border-radius:8px;padding:.75rem'>
+          <div style='background:#0f0d1a;border:1px solid #1e1535;border-radius:8px;padding:.75rem'>
             <div style='font-size:.62rem;color:#5c6380;text-transform:uppercase;letter-spacing:.06em'>Shape</div>
             <div style='color:#e2e5ef;font-weight:600;font-size:.85rem'>{df.shape[0]:,} rows × {df.shape[1]} cols</div>
           </div>
-          <div style='background:#141720;border:1px solid #1e2330;border-radius:8px;padding:.75rem'>
+          <div style='background:#0f0d1a;border:1px solid #1e1535;border-radius:8px;padding:.75rem'>
             <div style='font-size:.62rem;color:#5c6380;text-transform:uppercase;letter-spacing:.06em'>Class Split</div>
-            <div style='color:#52d483;font-weight:600;font-size:.85rem'>No:  {vc["No"]} ({vc["No"]/len(df):.1%})</div>
-            <div style='color:#e05c5c;font-weight:600;font-size:.85rem'>Yes: {vc["Yes"]} ({vc["Yes"]/len(df):.1%})</div>
+            <div style='color:#8b5cf6;font-weight:600;font-size:.85rem'>No:  {vc["No"]} ({vc["No"]/len(df):.1%})</div>
+            <div style='color:#ec4899;font-weight:600;font-size:.85rem'>Yes: {vc["Yes"]} ({vc["Yes"]/len(df):.1%})</div>
           </div>
-          <div style='background:#141720;border:1px solid #1e2330;border-radius:8px;padding:.75rem'>
+          <div style='background:#0f0d1a;border:1px solid #1e1535;border-radius:8px;padding:.75rem'>
             <div style='font-size:.62rem;color:#5c6380;text-transform:uppercase;letter-spacing:.06em'>Missing Values</div>
-            <div style='color:#52d483;font-weight:600'>0 missing ✅</div>
+            <div style='color:#8b5cf6;font-weight:600'>0 missing ✅</div>
           </div>
-          <div style='background:#141720;border:1px solid #1e2330;border-radius:8px;padding:.75rem'>
+          <div style='background:#0f0d1a;border:1px solid #1e1535;border-radius:8px;padding:.75rem'>
             <div style='font-size:.62rem;color:#5c6380;text-transform:uppercase;letter-spacing:.06em'>Features</div>
-            <div style='color:#4f9cf9;font-weight:600'>23 input features</div>
+            <div style='color:#a855f7;font-weight:600'>23 input features</div>
             <div style='font-size:.62rem;color:#5c6380'>Numeric · Categorical · Ordinal</div>
           </div>
         </div>
@@ -1127,7 +1133,7 @@ if page == "🏠 Overview & KPIs":
 elif page == "🔍 Exploratory Analysis":
     st.markdown("""
     <div class="page-hdr">
-      <div class="page-hdr-accent" style="background:linear-gradient(90deg,#52d483,#4f9cf9)"></div>
+      <div class="page-hdr-accent" style="background:linear-gradient(90deg,#a855f7,#6366f1)"></div>
       <span class="page-hdr-icon">🔍</span>
       <div class="page-hdr-title">Exploratory Data Analysis</div>
       <div class="page-hdr-sub">Visual breakdown across all HR dimensions — distributions, attrition rates, correlations</div>
@@ -1170,7 +1176,7 @@ elif page == "🔍 Exploratory Analysis":
             ax.set_title("Age Distribution by Attrition", color=PRIMARY, fontweight="bold")
             ax.set_xlabel("Age"); ax.set_ylabel("Count")
             ax.legend(title="Attrition", labelcolor=PRIMARY,
-                      facecolor=BG, edgecolor="#1e2330")
+                      facecolor=BG, edgecolor="#1e1535")
             st.pyplot(fig, use_container_width=True)
             st.caption("💡 Younger employees (<30) leave at a higher rate than 35–50 cohort")
 
@@ -1206,7 +1212,7 @@ elif page == "🔍 Exploratory Analysis":
             ax.bar(x + w/2, ot.get("Yes", 0), w, color=PALETTE["Yes"], alpha=0.8, label="Left",   edgecolor=BG)
             ax.set_xticks(x); ax.set_xticklabels(ot.index)
             ax.set_title("OverTime vs Attrition", color=PRIMARY, fontweight="bold")
-            ax.legend(labelcolor=PRIMARY, facecolor=BG, edgecolor="#1e2330")
+            ax.legend(labelcolor=PRIMARY, facecolor=BG, edgecolor="#1e1535")
             st.pyplot(fig, use_container_width=True)
             st.caption(f"💡 Overtime employees leave at {ot_rate_y:.0f}% vs {ot_rate_n:.0f}% for non-overtime")
 
@@ -1242,7 +1248,7 @@ elif page == "🔍 Exploratory Analysis":
             ax.set_facecolor(BG)
             ms  = df.groupby(["MaritalStatus", "Attrition"]).size().unstack(fill_value=0)
             msr = ms["Yes"] / (ms["Yes"] + ms["No"]) * 100
-            cols_ms = ["#4f9cf9", "#e05c5c", "#52d483"]
+            cols_ms = ["#a855f7", "#ec4899", "#6366f1"]
             bars = ax.bar(msr.index, msr.values, color=cols_ms, alpha=0.85, edgecolor=BG)
             ax.bar_label(bars, fmt="%.1f%%", padding=3, fontsize=8, color=PRIMARY)
             ax.set_title("By Marital Status", color=PRIMARY, fontweight="bold")
@@ -1255,7 +1261,7 @@ elif page == "🔍 Exploratory Analysis":
             ax.set_facecolor(BG)
             bt  = df.groupby(["BusinessTravel", "Attrition"]).size().unstack(fill_value=0)
             btr = bt["Yes"] / (bt["Yes"] + bt["No"]) * 100
-            bars = ax.bar(range(len(btr)), btr.values, color=["#4f9cf9", "#f0a840", "#e05c5c"], alpha=0.85, edgecolor=BG)
+            bars = ax.bar(range(len(btr)), btr.values, color=["#a855f7", "#6366f1", "#ec4899"], alpha=0.85, edgecolor=BG)
             ax.bar_label(bars, fmt="%.1f%%", padding=3, fontsize=8, color=PRIMARY)
             ax.set_xticks(range(len(btr))); ax.set_xticklabels(btr.index, rotation=10, ha="right", fontsize=8)
             ax.set_title("By Business Travel", color=PRIMARY, fontweight="bold")
@@ -1309,7 +1315,7 @@ elif page == "🔍 Exploratory Analysis":
 elif page == "🤖 Model Comparison":
     st.markdown(f"""
     <div class="page-hdr">
-      <div class="page-hdr-accent" style="background:linear-gradient(90deg,#f0a840,#e05c5c)"></div>
+      <div class="page-hdr-accent" style="background:linear-gradient(90deg,#ec4899,#a855f7)"></div>
       <span class="page-hdr-icon">🤖</span>
       <div class="page-hdr-title">Model Comparison</div>
       <div class="page-hdr-sub">5 classifiers · 5-fold cross-validation · held-out test set · optimised threshold 0.35</div>
@@ -1345,7 +1351,7 @@ elif page == "🤖 Model Comparison":
         is_best   = (name == best_name)
         row_cls   = "lb-row lb-best" if is_best else "lb-row"
         auc_pct   = res["roc_auc"] / max_auc * 100
-        bar_col   = "#52d483" if is_best else "#4f9cf9"
+        bar_col   = "#ec4899" if is_best else "#a855f7"
         delay     = str(round(i * 0.07, 2))
         roc_str   = f"{res['roc_auc']:.4f}"
         cv_str    = f"{res['cv_roc'].mean():.4f}"
@@ -1375,7 +1381,7 @@ elif page == "🤖 Model Comparison":
         # ROC Curves
         fig, ax = plt.subplots(figsize=(6, 5), facecolor=BG)
         ax.set_facecolor(BG)
-        colors = ["#4f9cf9", "#52d483", "#e05c5c", "#9b59b6", "#f0a840"]
+        colors = ["#a855f7", "#6366f1", "#ec4899", "#8b5cf6", "#c084fc"]
         for i, (name, res) in enumerate(results.items()):
             fpr, tpr, _ = roc_curve(y_test, res["y_proba"])
             lw = 3 if name == best_name else 1.5
@@ -1384,7 +1390,7 @@ elif page == "🤖 Model Comparison":
         ax.plot([0, 1], [0, 1], "#252b3b", linestyle="--", lw=1.5, label="Random (0.500)")
         ax.set_title("ROC Curves — Test Set", color=PRIMARY, fontweight="bold")
         ax.set_xlabel("False Positive Rate"); ax.set_ylabel("True Positive Rate")
-        ax.legend(fontsize=8, labelcolor=PRIMARY, facecolor=BG, edgecolor="#1e2330")
+        ax.legend(fontsize=8, labelcolor=PRIMARY, facecolor=BG, edgecolor="#1e1535")
         st.pyplot(fig, use_container_width=True)
 
     with col2:
@@ -1420,7 +1426,7 @@ elif page == "🤖 Model Comparison":
 elif page == "🎯 Best Model Deep Dive":
     st.markdown(f"""
     <div class="page-hdr">
-      <div class="page-hdr-accent" style="background:linear-gradient(90deg,#9b72f5,#4f9cf9)"></div>
+      <div class="page-hdr-accent" style="background:linear-gradient(90deg,#6366f1,#a855f7)"></div>
       <span class="page-hdr-icon">🎯</span>
       <div class="page-hdr-title">Best Model Deep Dive — {best_name}</div>
       <div class="page-hdr-sub">Detailed performance analysis · confusion matrix · precision-recall · probability distribution</div>
@@ -1465,7 +1471,7 @@ elif page == "🎯 Best Model Deep Dive":
         ax.axhline(baseline, color="#5c6380", linestyle="--", alpha=0.7, label=f"Baseline ({baseline:.2f})")
         ax.set_title(f"Precision-Recall  (AP={best['avg_prec']:.3f})", color=PRIMARY, fontweight="bold")
         ax.set_xlabel("Recall"); ax.set_ylabel("Precision")
-        ax.legend(labelcolor=PRIMARY, facecolor=BG, edgecolor="#1e2330")
+        ax.legend(labelcolor=PRIMARY, facecolor=BG, edgecolor="#1e1535")
         st.pyplot(fig, use_container_width=True)
 
         ap = best["avg_prec"]
@@ -1486,10 +1492,10 @@ elif page == "🎯 Best Model Deep Dive":
     ax.hist(best["y_proba"][y_test == 1], bins=30, alpha=0.7,
             color=PALETTE["Yes"], label="Attrition", edgecolor=BG)
     ax.axvline(0.5, color=PRIMARY, linestyle="--", lw=2, label="Default threshold (0.50)")
-    ax.axvline(0.35, color="#f0a840", linestyle=":", lw=2, label="Suggested threshold (0.35)")
+    ax.axvline(0.35, color="#c084fc", linestyle=":", lw=2, label="Suggested threshold (0.35)")
     ax.set_title("Predicted Probability Distribution — Test Set", color=PRIMARY, fontweight="bold")
     ax.set_xlabel("P(Attrition)"); ax.set_ylabel("Count")
-    ax.legend(labelcolor=PRIMARY, facecolor=BG, edgecolor="#1e2330")
+    ax.legend(labelcolor=PRIMARY, facecolor=BG, edgecolor="#1e1535")
     st.pyplot(fig, use_container_width=True)
 
     st.divider()
@@ -1504,7 +1510,7 @@ elif page == "🎯 Best Model Deep Dive":
 elif page == "🌲 Feature Importance":
     st.markdown("""
     <div class="page-hdr">
-      <div class="page-hdr-accent" style="background:linear-gradient(90deg,#52d483,#f0a840)"></div>
+      <div class="page-hdr-accent" style="background:linear-gradient(90deg,#a855f7,#ec4899)"></div>
       <span class="page-hdr-icon">🌲</span>
       <div class="page-hdr-title">Feature Importance</div>
       <div class="page-hdr-sub">Which factors drive attrition most? — Random Forest Gini importance + Logistic Regression coefficients</div>
@@ -1528,7 +1534,7 @@ elif page == "🌲 Feature Importance":
         ax.axvline(fi_rf.median(), color="#5c6380", linestyle="--", alpha=0.6, label="Median importance")
         ax.set_title("Random Forest — Gini Feature Importance", color=PRIMARY, fontweight="bold")
         ax.set_xlabel("Importance Score")
-        ax.legend(labelcolor=PRIMARY, facecolor=BG, edgecolor="#1e2330")
+        ax.legend(labelcolor=PRIMARY, facecolor=BG, edgecolor="#1e1535")
         st.pyplot(fig, use_container_width=True)
         st.caption("🔴 Red bars = above-median importance features. These are your primary intervention points.")
 
@@ -1543,7 +1549,7 @@ elif page == "🌲 Feature Importance":
         ax.axvline(fi_lr.median(), color="#5c6380", linestyle="--", alpha=0.6, label="Median")
         ax.set_title("Logistic Regression — |Coefficient| Importance", color=PRIMARY, fontweight="bold")
         ax.set_xlabel("|Coefficient|")
-        ax.legend(labelcolor=PRIMARY, facecolor=BG, edgecolor="#1e2330")
+        ax.legend(labelcolor=PRIMARY, facecolor=BG, edgecolor="#1e1535")
         st.pyplot(fig, use_container_width=True)
         st.caption("💡 Larger absolute coefficients = stronger influence on attrition probability")
 
@@ -1554,7 +1560,7 @@ elif page == "🌲 Feature Importance":
 elif page == "💡 Attrition Drivers":
     st.markdown(f"""
     <div class="page-hdr">
-      <div class="page-hdr-accent" style="background:linear-gradient(90deg,#f0a840,#e05c5c,#9b72f5)"></div>
+      <div class="page-hdr-accent" style="background:linear-gradient(90deg,#ec4899,#a855f7,#6366f1)"></div>
       <span class="page-hdr-icon">💡</span>
       <div class="page-hdr-title">Attrition Drivers & HR Actions</div>
       <div class="page-hdr-sub">Top 10 features ranked by impact · each with a specific, actionable HR recommendation</div>
@@ -1613,7 +1619,7 @@ elif page == "💡 Attrition Drivers":
 elif page == "🔮 Predict Employee":
     st.markdown(f"""
     <div class="page-hdr">
-      <div class="page-hdr-accent" style="background:linear-gradient(90deg,#e05c5c,#9b72f5,#4f9cf9)"></div>
+      <div class="page-hdr-accent" style="background:linear-gradient(90deg,#ec4899,#a855f7,#6366f1)"></div>
       <span class="page-hdr-icon">🔮</span>
       <div class="page-hdr-title">Predict Individual Attrition Risk</div>
       <div class="page-hdr-sub">Fill in all fields below — model scores each employee in real-time across 29 features</div>
@@ -1709,11 +1715,11 @@ elif page == "🔮 Predict Employee":
             prog_ph = st.empty()
             prog_ph.markdown("""
             <div style='background:#0e1018;border:1px solid #1a2235;border-radius:12px;padding:1.2rem 1.5rem;margin:.5rem 0'>
-              <div style='font-size:.72rem;color:#3d5580;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.7rem;font-family:DM Mono,monospace'>
+              <div style='font-size:.72rem;color:#3d5580;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.7rem;font-family:'JetBrains Mono',monospace'>
                 ⚙️ &nbsp; Running prediction pipeline...
               </div>
               <div style='height:4px;background:#0a0c14;border-radius:4px;overflow:hidden'>
-                <div style='height:4px;background:linear-gradient(90deg,#4f9cf9,#9b72f5);border-radius:4px;
+                <div style='height:4px;background:linear-gradient(90deg,#a855f7,#ec4899);border-radius:4px;
                             animation:barFill .6s ease both'></div>
               </div>
               <div style='display:flex;gap:1.5rem;margin-top:.7rem'>
@@ -1779,27 +1785,27 @@ elif page == "🔮 Predict Employee":
         # ── Big animated risk card ────────────────────────────────
         if prob >= 0.65:
             card_cls    = "risk-card risk-card-high"
-            bar_color   = "linear-gradient(90deg,#e05c5c,#c03030)"
+            bar_color   = "linear-gradient(90deg,#ec4899,#be185d)"
             action_cls  = "risk-action risk-action-high"
             icon        = "🚨"
             level_txt   = "HIGH RISK"
-            level_color = "#e05c5c"
+            level_color = "#ec4899"
             action_txt  = "⚡ Immediate manager check-in required. Flag for HR retention review within 48 hours."
         elif prob >= 0.40:
             card_cls    = "risk-card risk-card-med"
-            bar_color   = "linear-gradient(90deg,#f0a840,#c07820)"
+            bar_color   = "linear-gradient(90deg,#a855f7,#7c3aed)"
             action_cls  = "risk-action risk-action-med"
             icon        = "⚠️"
             level_txt   = "MEDIUM RISK"
-            level_color = "#f0a840"
+            level_color = "#a855f7"
             action_txt  = "📋 Schedule career conversation within 30 days. Review compensation and growth plan."
         else:
             card_cls    = "risk-card risk-card-low"
-            bar_color   = "linear-gradient(90deg,#52d483,#22a450)"
+            bar_color   = "linear-gradient(90deg,#6366f1,#4338ca)"
             action_cls  = "risk-action risk-action-low"
             icon        = "✅"
             level_txt   = "LOW RISK"
-            level_color = "#52d483"
+            level_color = "#6366f1"
             action_txt  = "🌱 Standard engagement applies. Continue regular check-ins and development plans."
 
         col_card, col_factors = st.columns([1, 1.1])
@@ -1814,11 +1820,11 @@ elif page == "🔮 Predict Employee":
               <div class="risk-bar-bg">
                 <div class="risk-bar-fill" style="width:{prob*100:.1f}%;background:{bar_color}"></div>
               </div>
-              <div style='display:flex;justify-content:space-between;font-size:.62rem;color:#2e3a55;margin-bottom:.4rem;font-family:DM Mono,monospace'>
+              <div style='display:flex;justify-content:space-between;font-size:.62rem;color:#2e3a55;margin-bottom:.4rem;font-family:'JetBrains Mono',monospace'>
                 <span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span>
               </div>
               <div class="{action_cls}">{action_txt}</div>
-              <div style='font-size:.62rem;color:#2a3550;margin-top:.8rem;font-family:DM Mono,monospace'>
+              <div style='font-size:.62rem;color:#2a3550;margin-top:.8rem;font-family:'JetBrains Mono',monospace'>
                 Model: {best_name} &nbsp;·&nbsp; Threshold: 0.35
               </div>
             </div>
@@ -1959,10 +1965,10 @@ elif page == "🔮 Predict Employee":
             factors_html = ""
             for idx2, (emoji, fname, detail, score) in enumerate(sorted(factors, key=lambda x: -x[3])):
                 score_str = f"+{score}" if score > 0 else str(score)
-                if score >= 2:   badge_cls,sc = "fb-red",   f"<span style='color:#e05c5c'>{score_str}</span>"
-                elif score == 1: badge_cls,sc = "fb-amber", f"<span style='color:#f0a840'>{score_str}</span>"
-                elif score < 0:  badge_cls,sc = "fb-green", f"<span style='color:#52d483'>{score_str}</span>"
-                else:            badge_cls,sc = "fb-grey",  f"<span style='color:#5c6890'>{score_str}</span>"
+                if score >= 2:   badge_cls,sc = "fb-red",   f"<span style='color:#ec4899'>{score_str}</span>"
+                elif score == 1: badge_cls,sc = "fb-amber", f"<span style='color:#a855f7'>{score_str}</span>"
+                elif score < 0:  badge_cls,sc = "fb-green", f"<span style='color:#6366f1'>{score_str}</span>"
+                else:            badge_cls,sc = "fb-grey",  f"<span style='color:#5a4a80'>{score_str}</span>"
                 factors_html += f"""<div class="factor-row" style="animation-delay:{idx2*0.04:.2f}s">
                   <span class="factor-badge {badge_cls}">{emoji} {score_str}</span>
                   <span class="factor-text"><b>{fname}</b><br><span style='font-size:.67rem;color:#3d4f6a'>{detail}</span></span>
@@ -1970,7 +1976,7 @@ elif page == "🔮 Predict Employee":
             with col_factors:
                 st.markdown(f"""
                 <div style='font-size:.68rem;color:#3d5580;text-transform:uppercase;letter-spacing:.1em;
-                            font-weight:700;font-family:DM Mono,monospace;margin-bottom:.7rem'>
+                            font-weight:700;font-family:'JetBrains Mono',monospace;margin-bottom:.7rem'>
                   📊 Risk Factor Breakdown
                 </div>
                 {factors_html}
